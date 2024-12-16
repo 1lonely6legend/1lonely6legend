@@ -1,0 +1,252 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>c++ explicit-implicit关键字 | ogier&#39;s blog</title>
+<link rel="shortcut icon" href="https://blog.ogier-maxwell.top/favicon.ico?v=1734325151610">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://blog.ogier-maxwell.top/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="c++ explicit-implicit关键字 | ogier&#39;s blog - Atom Feed" href="https://blog.ogier-maxwell.top/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="explicit与implicit（显示转换与隐式转换）
+在C++中，我们有时可以将构造函数用作自动类型转换函数。但这种自动特性并非总是合乎要求的，有时会导致意外的类型转换，因此，C++新增了关键字explicit，用于关闭这种自动特性。即..." />
+    <meta name="keywords" content="C++" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.ogier-maxwell.top">
+  <img class="avatar" src="https://blog.ogier-maxwell.top/images/avatar.png?v=1734325151610" alt="">
+  </a>
+  <h1 class="site-title">
+    ogier&#39;s blog
+  </h1>
+  <p class="site-description">
+    认识你的美
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              c++ explicit-implicit关键字
+            </h2>
+            <div class="post-info">
+              <span>
+                2022-12-25
+              </span>
+              <span>
+                4 min read
+              </span>
+              
+                <a href="https://blog.ogier-maxwell.top/tag/9jJOVfMt1H/" class="post-tag">
+                  # C++
+                </a>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h1 id="explicit与implicit显示转换与隐式转换">explicit与implicit（显示转换与隐式转换）</h1>
+<p>在C++中，我们有时可以将<strong>构造函数</strong>用作<strong>自动类型转换函数</strong>。但这种自动特性并非总是合乎要求的，<strong>有时会导致意外的类型转换</strong>，因此，C++新增了关键字explicit，用于关闭这种自动特性。即:</p>
+<blockquote>
+<p>被explicit关键字修饰的<strong>类构造函数</strong>，<strong>不能进行自动地隐式类型转换</strong>，只能显式地进行类型转换。</p>
+</blockquote>
+<p>首先, C++中的explicit关键字<strong>只能用于修饰只有一个参数或只有一个未提供默认值的类构造函数</strong>, 它的作用是表明该构造函数是显示的, 而非隐式的, 跟它相对应的<strong>另一个关键字是implicit, 意思是隐藏的,类构造函数默认情况下即声明为implicit(隐式)</strong>.</p>
+<p>注意：只有一个参数的构造函数，或者构造函数有n个参数，但有n-1个参数提供了默认值，这样的情况才能进行类型转换。</p>
+<blockquote>
+<p><strong>注意是构造函数、构造函数、构造函数</strong></p>
+</blockquote>
+<pre><code class="language-cpp">class Demo{
+public:
+    Demo(){};//没有参数，无法进行隐示类型转换
+    Demo(int a){};//有唯一参数，可以进行隐示类型转换
+    Demo(int a,int b){};//多个参数且无默认值，无法进行隐示类型转换
+    Demo(int a=0,int b=0,int c,int d=0){};//只有一个参数无默认值，可以进行隐示类型转换   
+};
+</code></pre>
+<p>下面的代码中, “Demo de1=10;” 这句为什么是可以的呢? 在C++中, <strong>如果的构造函数只有一个参数时, 那么在编译的时候就会有一个缺省的转换操作</strong>:将该构造函数对应数据类型的数据转换为该类对象. 也就是说 “Demo de1=10;” 这段代码, 编译器自动将整型转换为Demo类对象, 实际上<strong>等同于下面的操作:Demo de1=Demo(10)</strong>。</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+class Demo{
+public:
+    Demo(){};//没有参数，无法进行隐示类型转换
+    Demo(int a){};//有唯一参数，可以进行隐示类型转换
+    Demo(int a,int b){};//多个参数且无默认值，无法进行隐示类型转换
+		//Demo(int a=0,int b=0,int c,int d=0){};//只有一个参数c无默认值，可以进行隐示类型转换
+};
+int main()
+{
+    Demo de=Demo(10);//可以
+    Demo de1=10;//可以
+    
+    return 0;
+}
+
+</code></pre>
+<hr>
+<p>explicit（明确的）关键字的作用就是防止类构造函数的隐式自动转换.</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+class Demo{
+public:
+    Demo(){};//没有参数，无法进行隐示类型转换
+    explicit Demo(int a){};//有唯一参数，可以进行隐示类型转换，但加了explicit关键字
+    Demo(int a,int b){};//多个参数且无默认值，无法进行隐示类型转换
+		//Demo(int a=0,int b=0,int c,int d=0){};//只有一个参数无默认值，可以进行隐示类型转换
+
+};
+int main()
+{
+    Demo de=Demo(10);//可以
+    Demo de1=10;//不可以，构造函数加了explicit关键字，不能进行隐式转换
+
+    return 0;
+}
+
+</code></pre>
+<hr>
+<p>举一个实际上使用explicit的例子</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+class A{
+	public:
+		A(int x){//A的一个构造函数
+		cout&lt;&lt;&quot;我被用了&quot;&lt;&lt;endl;
+	}
+};
+
+void f(A a){//本意函数的参数是一个类型A的对象a
+}
+int main( ){
+	f(1);// 被隐式转换为f(A(1)) ，本来是1却被自动调用了A(1)这就是拷贝初始化
+	//输出：&quot;我被调用了&quot;
+	return 0;
+}
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#explicit%E4%B8%8Eimplicit%E6%98%BE%E7%A4%BA%E8%BD%AC%E6%8D%A2%E4%B8%8E%E9%9A%90%E5%BC%8F%E8%BD%AC%E6%8D%A2">explicit与implicit（显示转换与隐式转换）</a></li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.ogier-maxwell.top/post/static-const-yu-chu-shi-hua/">
+              <h3 class="post-title">
+                static const 与初始化
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">抛瓦</a>
+  <a class="rss" href="https://blog.ogier-maxwell.top/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

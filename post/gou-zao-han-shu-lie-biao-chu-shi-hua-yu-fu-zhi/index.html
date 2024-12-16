@@ -1,0 +1,338 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>构造函数列表初始化与赋值 | ogier&#39;s blog</title>
+<link rel="shortcut icon" href="https://blog.ogier-maxwell.top/favicon.ico?v=1734325151610">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://blog.ogier-maxwell.top/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="构造函数列表初始化与赋值 | ogier&#39;s blog - Atom Feed" href="https://blog.ogier-maxwell.top/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="构造函数列表初始化与赋值的区别
+构造函数初始化的两种类型
+
+手动给成员赋值
+使用初始化列表
+
+
+使用初始化列表的构造函数
+
+类名::构造函数名(参数表): (成员初始化表){构造函数体}
+
+构造函数中的初始化列表只需要在参数列表的后面加一个..." />
+    <meta name="keywords" content="C++" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.ogier-maxwell.top">
+  <img class="avatar" src="https://blog.ogier-maxwell.top/images/avatar.png?v=1734325151610" alt="">
+  </a>
+  <h1 class="site-title">
+    ogier&#39;s blog
+  </h1>
+  <p class="site-description">
+    认识你的美
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              构造函数列表初始化与赋值
+            </h2>
+            <div class="post-info">
+              <span>
+                2023-10-10
+              </span>
+              <span>
+                5 min read
+              </span>
+              
+                <a href="https://blog.ogier-maxwell.top/tag/9jJOVfMt1H/" class="post-tag">
+                  # C++
+                </a>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h1 id="构造函数列表初始化与赋值的区别">构造函数列表初始化与赋值的区别</h1>
+<h2 id="构造函数初始化的两种类型">构造函数初始化的两种类型</h2>
+<ul>
+<li>手动给成员赋值</li>
+<li>使用初始化列表</li>
+</ul>
+<hr>
+<h2 id="使用初始化列表的构造函数">使用初始化列表的构造函数</h2>
+<blockquote>
+<p>类名::构造函数名(参数表): (成员初始化表){构造函数体}</p>
+</blockquote>
+<p>构造函数中的初始化列表只需要在参数列表的后面加一个冒号（:），然后*<em>将要初始化的成员按照*<code>成员名(参数)</code><em>的格式排列在后面，个成员之间用逗号隔开</em></em></p>
+<pre><code class="language-cpp">class Test{
+	public:
+		int A;
+		int B;
+		Test(int a);
+};
+
+Test::Test(int a):A(a),B(10) 
+//给成员变量 A、B 初始化，不一定要和参数列表写在一行
+{ /* …… */ }
+</code></pre>
+<p>其中成员的初始化顺序不是按照初始化列表中的顺序来的，而是<strong>按照成员声明的顺序</strong>来的，例如：</p>
+<pre><code class="language-cpp">/* Test类的声明同上 */
+Test::Test(int a):B(10),A(a) 
+// 虽然 B 在前面，但还是 A 先初始化
+{/* …… */}
+
+Test::Test(int a):B(a),A(B) //是错误的
+//此处 A 的初始化依赖了 B，然而是 A 先初始化，这就导致 A 得到了 B 中还没初始化的错误内容
+{/* …… */}
+</code></pre>
+<h2 id="若类的数据成员是静态的const或者引用类型必须使用初始化列表">若类的数据成员是静态的const或者引用类型，必须使用初始化列表</h2>
+<h3 id="const和static的区别">const和static的区别</h3>
+<p>static：修饰的变量为静态变量，只会被初始化一次，该变量存储在内存中的静态区，地址不会改变。修饰全局变量时，每个函数对其的调用都是调用其生成的副本，修饰局部变量时每次调用都是上一次调用后的值。</p>
+<p>const：修饰的变量只会被定义（可能也只能在定义的时候赋值）一次，定义之后无法对其进行赋值或修改（即不能充当左值）。</p>
+<p><strong>static和const修饰量的最大区别就是：static的值能修改，const不能（const修饰指针的情况另分）</strong></p>
+<blockquote>
+<p>const是静态局部变量，在超出其作用域后会被立即释放,在类的具体对象中，<strong>不同的类可以有不同的const变量</strong></p>
+<p>static是静态整体变量，在函数执行完毕后不会释放其空间，<strong>static变量是和类绑定的</strong>不同的对象的static变量是一样的</p>
+</blockquote>
+<hr>
+<ul>
+<li>
+<p>静态(const)的数据成员只能初始化而不能赋值，同样引用类型也是只可以被初始化，那么只有用初始化列表。</p>
+</li>
+<li>
+<p>因为<strong>静态数据成员必须在定义时就被赋值</strong>，在构造函数体内进行赋值时，编译会报错。</p>
+</li>
+<li>
+<p><strong>静态数据成员在类声明中声明，在包含类方法的文件中初始化。初始化时使用作用域运算符来指出静态成员所属的类。但如果静态成员是整形const或枚举型const，则可以在类声明中初始化。</strong></p>
+</li>
+<li>
+<p>static类型的静态变量好像不能使用列表初始化的方式进行初始化</p>
+</li>
+<li>
+<p><a href="https://blog.csdn.net/tobefxz/article/details/14109697">C++ static、const和static const类型成员变量声明以及初始化</a></p>
+</li>
+<li>
+<p><a href="https://blog.csdn.net/weixin_41469381/article/details/88855872">如何初始化const和static数据成员</a></p>
+</li>
+<li>
+<p><a href="https://zhuanlan.zhihu.com/p/141113043">一文带你了解static 和const</a></p>
+</li>
+</ul>
+<pre><code class="language-cpp">#include &lt;iostream&gt;  
+#include &lt;string&gt;  
+using namespace std;  
+  
+template&lt;class t&gt;  
+class namedptr {  
+public:  
+    namedptr(const string&amp; initname, t *initptr);  
+private:  
+    const string name; //静态数据成员的初始化必需用初始化列表  
+    t * const ptr;  
+};  
+  
+  
+  
+template&lt;class t&gt;  
+namedptr&lt;t&gt;::namedptr(const string&amp; initname, t *initptr)
+  : name(initname), ptr(initptr)  {}  
+  
+//第二种方法是在构造函数体内赋值：  
+//但含有静态数据类型，所以不可用
+  
+//template&lt;class t&gt;  
+//namedptr&lt;t&gt;::namedptr(const string&amp; initname, t *initptr)  
+//{  
+//  name = initname;  
+//  ptr = initptr;  
+//}  
+  
+  
+int main()  
+{  
+    int a  = 10;  
+    namedptr&lt;int&gt; Test(&quot;SHENZHEN&quot;,&amp;a);  
+}  
+</code></pre>
+<h2 id="两种初始化方式的对比">两种初始化方式的对比</h2>
+<blockquote>
+<p>首先 <em><strong>构造函数体内进行赋值会带来额外的开销，效率会低于初始化列表的方式</strong></em></p>
+</blockquote>
+<pre><code class="language-cpp">#ifdef A_H_
+#define A_H_
+#include &lt;iostream&gt;
+usingnamespace std;
+class A{
+public:
+	A(int a);
+	static void print();//静态成员函数
+private:
+	static int aa;//静态数据成员的声明
+	static const int count;//常量静态数据成员（可以在构造函数中初始化）
+	const int bb;//常量数据成员
+};
+ 
+int A::aa=0;//静态成员的定义+初始化
+const int A::count=25;//静态常量成员定义+初始化
+ 
+A::A(int a):bb(a){//常量成员的初始化
+aa+=1;
+}
+ 
+void A::print(){
+cout&lt;&lt;&quot;count=&quot;&lt;&lt;count&lt;&lt;endl;
+cout&lt;&lt;&quot;aa=&quot;&lt;&lt;aa&lt;&lt;endl;
+}
+ 
+#endif
+ 
+void main(){
+	A a(10);
+	A::print();//通过类访问静态成员函数
+	a.print();//通过对象访问静态成员函数
+}
+</code></pre>
+<p>在上面的例子中</p>
+<ul>
+<li>第一种使用了<strong>初始化列表</strong>的方式。 只是调用了一次缺省的构造函数，并不会调用赋值函数。会减少不必要的开支，当类相当复杂时，就会看出使用初始化列表的好处。</li>
+<li>第二种使用了<strong>构造函数体内赋值</strong>的方式。初始化数据成员时会两次对string的成员函数的调用：一次是缺省构造函数，另一次是赋值。</li>
+</ul>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E5%88%97%E8%A1%A8%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%8E%E8%B5%8B%E5%80%BC%E7%9A%84%E5%8C%BA%E5%88%AB">构造函数列表初始化与赋值的区别</a>
+<ul>
+<li><a href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E5%88%9D%E5%A7%8B%E5%8C%96%E7%9A%84%E4%B8%A4%E7%A7%8D%E7%B1%BB%E5%9E%8B">构造函数初始化的两种类型</a></li>
+<li><a href="#%E4%BD%BF%E7%94%A8%E5%88%9D%E5%A7%8B%E5%8C%96%E5%88%97%E8%A1%A8%E7%9A%84%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0">使用初始化列表的构造函数</a></li>
+<li><a href="#%E8%8B%A5%E7%B1%BB%E7%9A%84%E6%95%B0%E6%8D%AE%E6%88%90%E5%91%98%E6%98%AF%E9%9D%99%E6%80%81%E7%9A%84const%E6%88%96%E8%80%85%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E5%BF%85%E9%A1%BB%E4%BD%BF%E7%94%A8%E5%88%9D%E5%A7%8B%E5%8C%96%E5%88%97%E8%A1%A8">若类的数据成员是静态的const或者引用类型，必须使用初始化列表</a>
+<ul>
+<li><a href="#const%E5%92%8Cstatic%E7%9A%84%E5%8C%BA%E5%88%AB">const和static的区别</a></li>
+</ul>
+</li>
+<li><a href="#%E4%B8%A4%E7%A7%8D%E5%88%9D%E5%A7%8B%E5%8C%96%E6%96%B9%E5%BC%8F%E7%9A%84%E5%AF%B9%E6%AF%94">两种初始化方式的对比</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.ogier-maxwell.top/post/lambda-ni-ming-han-shu/">
+              <h3 class="post-title">
+                lambda匿名函数
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">抛瓦</a>
+  <a class="rss" href="https://blog.ogier-maxwell.top/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1994 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://blog.ogier-maxwell.top</id>
+    <title>ogier&apos;s blog</title>
+    <updated>2024-12-16T04:59:16.166Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://blog.ogier-maxwell.top"/>
+    <link rel="self" href="https://blog.ogier-maxwell.top/atom.xml"/>
+    <subtitle>认识你的美</subtitle>
+    <logo>https://blog.ogier-maxwell.top/images/avatar.png</logo>
+    <icon>https://blog.ogier-maxwell.top/favicon.ico</icon>
+    <rights>All rights reserved 2024, ogier&apos;s blog</rights>
+    <entry>
+        <title type="html"><![CDATA[面试中遇到的ILQR算法相关问题]]></title>
+        <id>https://blog.ogier-maxwell.top/post/mian-shi-zhong-yu-dao-de-ilqr-suan-fa-xiang-guan-wen-ti/</id>
+        <link href="https://blog.ogier-maxwell.top/post/mian-shi-zhong-yu-dao-de-ilqr-suan-fa-xiang-guan-wen-ti/">
+        </link>
+        <updated>2024-12-12T13:26:18.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="为什么ilqr中只需要对前馈项k进行缩放反馈k不需要">为什么ilqr中只需要对前馈项k进行缩放，反馈K不需要：</h2>
+<p>(1) 理论基础：</p>
+<ul>
+<li>反馈增益K是基于局部线性化的最优反馈策略，它反映了在当前轨迹附近系统对状态偏差的最优响应方式</li>
+<li>这种局部特性使得K在小范围内保持有效性，不需要额外缩放</li>
+</ul>
+<p>(2) 稳定性考虑：</p>
+<p>δu = Kδx + d</p>
+<ul>
+<li>K项确保了闭环系统的局部稳定性</li>
+<li>如果对K进行缩放，可能会破坏这种稳定性保证</li>
+</ul>
+<p>(3) 实际效果：</p>
+<ul>
+<li><strong>前馈项d主导着轨迹的大尺度更新</strong></li>
+<li><strong>反馈项Kδx主要起到局部校正作用</strong></li>
+<li><strong>在实践中，只缩放d就能有效控制搜索步长</strong></li>
+</ul>
+<h2 id="为什么ilqr中会出现黑塞矩阵的奇异性问题">为什么ilqr中会出现黑塞矩阵的奇异性问题</h2>
+<p>几个主要原因：</p>
+<p>(1) 系统结构导致：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>R</mi><mi>k</mi></msub><mo>=</mo><msub><mi>l</mi><mrow><mi>u</mi><mi>u</mi></mrow></msub><mo>+</mo><msubsup><mi>B</mi><mi>k</mi><mi>T</mi></msubsup><msub><mi>V</mi><mrow><mi>k</mi><mo>+</mo><mn>1</mn></mrow></msub><msub><mi>B</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">R_k=l_{uu}+B_k^TV_{k+1}B_k
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.00773em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.84444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.01968em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">u</span><span class="mord mathdefault mtight">u</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.138331em;vertical-align:-0.247em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8913309999999999em;"><span style="top:-2.4530000000000003em;margin-left:-0.05017em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.22222em;">V</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.22222em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.05017em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span></p>
+<ul>
+<li>如果<strong>控制输入之间存在线性相关性，B_k的列向量可能线性相关</strong></li>
+<li><strong>这会导致R_k接近奇异</strong></li>
+</ul>
+<p>(2) 优化问题特性：</p>
+<ul>
+<li>某些<strong>控制维度对目标函数的影响很小时</strong></li>
+<li>代价函数在某些方向上几乎是平的</li>
+<li>这会导致黑塞矩阵中出现接近零的特征值</li>
+</ul>
+<p>(3) 数值计算问题：</p>
+<ul>
+<li>在<strong>迭代过程中，由于数值累积误差</strong></li>
+<li>可能导致计算出的黑塞矩阵不再正定</li>
+</ul>
+<p>数学表达： 当黑塞矩阵H的条件数很大时：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>κ</mi><mo>(</mo><mi>H</mi><mo>)</mo><mo>=</mo><mfrac><msub><mi>λ</mi><mrow><mi>m</mi><mi>a</mi><mi>x</mi></mrow></msub><msub><mi>λ</mi><mrow><mi>m</mi><mi>i</mi><mi>n</mi></mrow></msub></mfrac><mo>≫</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\kappa(H)=\frac{\lambda_{max}}{\lambda_{min}}\gg1
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">κ</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.08125em;">H</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.20744em;vertical-align:-0.8360000000000001em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.37144em;"><span style="top:-2.3139999999999996em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathdefault">λ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">m</span><span class="mord mathdefault mtight">i</span><span class="mord mathdefault mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathdefault">λ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">m</span><span class="mord mathdefault mtight">a</span><span class="mord mathdefault mtight">x</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.8360000000000001em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≫</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span></span></p>
+<p>其中λ表示特征值，这种情况下求逆会不稳定。</p>
+<p>所以需要正则化：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>H</mi><mrow><mi>r</mi><mi>e</mi><mi>g</mi></mrow></msub><mo>=</mo><mi>H</mi><mo>+</mo><mi>μ</mi><mi>I</mi></mrow><annotation encoding="application/x-tex">H_{reg}=H+\mu I
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.969438em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.08125em;">H</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15139200000000003em;"><span style="top:-2.5500000000000003em;margin-left:-0.08125em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">r</span><span class="mord mathdefault mtight">e</span><span class="mord mathdefault mtight" style="margin-right:0.03588em;">g</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault" style="margin-right:0.08125em;">H</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8777699999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">μ</span><span class="mord mathdefault" style="margin-right:0.07847em;">I</span></span></span></span></span></p>
+<p>确保：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>λ</mi><mrow><mi>m</mi><mi>i</mi><mi>n</mi></mrow></msub><mo>(</mo><msub><mi>H</mi><mrow><mi>r</mi><mi>e</mi><mi>g</mi></mrow></msub><mo>)</mo><mo>≥</mo><mi>μ</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lambda_{min}(H_{reg})\geq\mu&gt;0
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.036108em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathdefault">λ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">m</span><span class="mord mathdefault mtight">i</span><span class="mord mathdefault mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.08125em;">H</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15139200000000003em;"><span style="top:-2.5500000000000003em;margin-left:-0.08125em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">r</span><span class="mord mathdefault mtight">e</span><span class="mord mathdefault mtight" style="margin-right:0.03588em;">g</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.7335400000000001em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">μ</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span></span></span></span></span></p>
+<h2 id="关于使用bfgs代替黑塞矩阵的优缺点">关于使用BFGS代替黑塞矩阵的优缺点：</h2>
+<p>优点：</p>
+<p>(1) 计算效率：</p>
+<ul>
+<li>避免了直接计算复杂的二阶导数</li>
+<li>使用梯度信息递归更新，计算量小</li>
+</ul>
+<p>(2) 数值稳定性：</p>
+<ul>
+<li>BFGS保证近似黑塞矩阵正定</li>
+<li>天然避免了奇异性问题</li>
+</ul>
+<p>(3) 内存效率：</p>
+<ul>
+<li>可以使用L-BFGS等限存版本</li>
+<li>适合大规模优化问题</li>
+</ul>
+<p>缺点：</p>
+<p>(1) 收敛特性：</p>
+<ul>
+<li>收敛速度可能比真实黑塞矩阵慢</li>
+<li>需要更多迭代次数</li>
+</ul>
+<p>(2) 局部性：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>B</mi><mrow><mi>k</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>=</mo><msub><mi>B</mi><mi>k</mi></msub><mo>−</mo><mfrac><mrow><msub><mi>B</mi><mi>k</mi></msub><msub><mi>s</mi><mi>k</mi></msub><msubsup><mi>s</mi><mi>k</mi><mi>T</mi></msubsup><msub><mi>B</mi><mi>k</mi></msub></mrow><mrow><msubsup><mi>s</mi><mi>k</mi><mi>T</mi></msubsup><msub><mi>B</mi><mi>k</mi></msub><msub><mi>s</mi><mi>k</mi></msub></mrow></mfrac><mo>+</mo><mfrac><mrow><msub><mi>y</mi><mi>k</mi></msub><msubsup><mi>y</mi><mi>k</mi><mi>T</mi></msubsup></mrow><mrow><msubsup><mi>y</mi><mi>k</mi><mi>T</mi></msubsup><msub><mi>s</mi><mi>k</mi></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">B_{k+1} = B_k - \frac{B_k s_k s_k^T B_k}{s_k^T B_k s_k} + \frac{y_k y_k^T}{y_k^T s_k}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.891661em;vertical-align:-0.208331em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.05017em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.05017em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.5327699999999997em;vertical-align:-1.0144389999999999em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.5183309999999999em;"><span style="top:-2.2868690000000003em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathdefault">s</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8231309999999998em;"><span style="top:-2.398692em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span><span style="top:-3.0448em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.30130799999999996em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.05017em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathdefault">s</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathdefault" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.05017em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathdefault">s</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathdefault">s</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-2.4168920000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2831079999999999em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.05017em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.0144389999999999em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.5327699999999997em;vertical-align:-1.0144389999999999em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.5183309999999999em;"><span style="top:-2.2868690000000003em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8231309999999998em;"><span style="top:-2.398692em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span><span style="top:-3.0448em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.30130799999999996em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathdefault">s</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-2.4168920000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2831079999999999em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.0144389999999999em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<ul>
+<li>只利用局部梯度信息构建近似</li>
+<li>可能捕捉不到全局曲率信息</li>
+</ul>
+<p>(3) 初始化敏感：</p>
+<ul>
+<li>需要好的初始黑塞矩阵估计</li>
+<li>否则前期收敛较慢</li>
+</ul>
+<p>建议使用场景：</p>
+<ol>
+<li>当系统规模较大，计算真实黑塞矩阵开销很大时</li>
+<li>当优化问题结构良好，梯度信息丰富时</li>
+<li>当实时性要求高，允许轻微性能损失时</li>
+</ol>
+<p>数学表达： 真实黑塞矩阵和BFGS近似的关系：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><munder><mi>lim</mi><mo>⁡</mo><mrow><mi>k</mi><mo>→</mo><mi mathvariant="normal">∞</mi></mrow></munder><mi mathvariant="normal">∥</mi><msub><mi>B</mi><mi>k</mi></msub><mo>−</mo><msup><mi mathvariant="normal">∇</mi><mn>2</mn></msup><mi>f</mi><mo>(</mo><msup><mi>x</mi><mo>∗</mo></msup><mo>)</mo><mi mathvariant="normal">∥</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lim_{k\to\infty}\|B_k-\nabla^2f(x^*)\|=0
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.5021079999999998em;vertical-align:-0.7521079999999999em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.69444em;"><span style="top:-2.047892em;margin-left:0em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span><span class="mrel mtight">→</span><span class="mord mtight">∞</span></span></span></span><span style="top:-2.7em;"><span class="pstrut" style="height:2.7em;"></span><span><span class="mop">lim</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7521079999999999em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">∥</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.05017em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.1141079999999999em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord">∇</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.738696em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">∗</span></span></span></span></span></span></span></span><span class="mclose">)</span><span class="mord">∥</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span></span></span></span></span></p>
+<p>但收敛速度：</p>
+<ul>
+<li>真实黑塞矩阵：二次收敛</li>
+<li>BFGS：超线性收敛</li>
+</ul>
+<p>在实际应用中，可以考虑：</p>
+<ol>
+<li>混合策略：</li>
+</ol>
+<ul>
+<li>前几次迭代使用真实黑塞矩阵建立良好的初始近似</li>
+<li>后续使用BFGS更新</li>
+</ul>
+<ol start="2">
+<li>自适应切换：</li>
+</ol>
+<ul>
+<li>监控优化进展</li>
+<li>在需要时切换回真实黑塞矩阵</li>
+</ul>
+<ol start="3">
+<li>正则化结合：</li>
+</ol>
+<ul>
+<li>对BFGS近似也添加适当正则化</li>
+<li>进一步提高数值稳定性</li>
+</ul>
+<h2 id="sqp-ilqr-ddp之间的关系">SQP ilqr DDP之间的关系：</h2>
+<ol>
+<li>基本算法特点与联系</li>
+</ol>
+<p><strong>SQP (Sequential Quadratic Programming):</strong></p>
+<ul>
+<li>是一种求解非线性约束优化问题的方法</li>
+<li>核心思想是将非线性优化问题在当前迭代点附近做二次近似</li>
+<li>每次迭代求解一个二次规划(QP)子问题</li>
+<li>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><munder><mi>min</mi><mo>⁡</mo><mrow><mi mathvariant="normal">Δ</mi><mi>x</mi></mrow></munder><mfrac><mn>1</mn><mn>2</mn></mfrac><mi mathvariant="normal">Δ</mi><msup><mi>x</mi><mi>T</mi></msup><mi>H</mi><mi mathvariant="normal">Δ</mi><mi>x</mi><mo>+</mo><msup><mi>g</mi><mi>T</mi></msup><mi mathvariant="normal">Δ</mi><mi>x</mi><mrow><mtext> </mtext><mi mathvariant="normal">s</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">t</mi><mi mathvariant="normal">.</mi></mrow><mspace width="1em"/><mi>c</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>+</mo><mi>A</mi><mi mathvariant="normal">Δ</mi><mi>x</mi><mo>≤</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\min_{\Delta x}\frac12\Delta x^TH\Delta x+g^T\Delta x\mathrm{~s.t.}\quad c(x)+A\Delta x\leq0
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:2.065771em;vertical-align:-0.744331em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.66786em;"><span style="top:-2.055669em;margin-left:0em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">Δ</span><span class="mord mathdefault mtight">x</span></span></span></span><span style="top:-2.7em;"><span class="pstrut" style="height:2.7em;"></span><span><span class="mop">min</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.744331em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord">2</span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord">1</span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mord">Δ</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8913309999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span></span></span></span></span></span></span></span><span class="mord mathdefault" style="margin-right:0.08125em;">H</span><span class="mord">Δ</span><span class="mord mathdefault">x</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.1413309999999999em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8913309999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span></span></span></span></span></span></span></span><span class="mord">Δ</span><span class="mord mathdefault">x</span><span class="mord"><span class="mspace nobreak"> </span><span class="mord mathrm">s</span><span class="mord mathrm">.</span><span class="mord mathrm">t</span><span class="mord mathrm">.</span></span><span class="mspace" style="margin-right:1em;"></span><span class="mord mathdefault">c</span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8193em;vertical-align:-0.13597em;"></span><span class="mord mathdefault">A</span><span class="mord">Δ</span><span class="mord mathdefault">x</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span></span></span></span></span></p>
+</li>
+</ul>
+<p><strong>iLQR (iterative Linear Quadratic Regulator):</strong></p>
+<ul>
+<li>专门用于解决轨迹优化问题的方法</li>
+<li>将非线性动力系统在轨迹附近线性化</li>
+<li>每次迭代求解LQR问题</li>
+<li>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><munder><mi>min</mi><mo>⁡</mo><msub><mi>u</mi><mi>t</mi></msub></munder><munderover><mo>∑</mo><mrow><mi>t</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>T</mi><mo>−</mo><mn>1</mn></mrow></munderover><mo>(</mo><msubsup><mi>x</mi><mi>t</mi><mi>T</mi></msubsup><mi>Q</mi><msub><mi>x</mi><mi>t</mi></msub><mo>+</mo><msubsup><mi>u</mi><mi>t</mi><mi>T</mi></msubsup><mi>R</mi><msub><mi>u</mi><mi>t</mi></msub><mo>)</mo><mrow><mtext> </mtext><mi mathvariant="normal">s</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">t</mi><mi mathvariant="normal">.</mi></mrow><mspace width="1em"/><msub><mi>x</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>=</mo><mi>A</mi><msub><mi>x</mi><mi>t</mi></msub><mo>+</mo><mi>B</mi><msub><mi>u</mi><mi>t</mi></msub></mrow><annotation encoding="application/x-tex">\min_{u_t}\sum_{t=0}^{T-1}(x_t^TQx_t+u_t^TRu_t)\mathrm{~s.t.}\quad x_{t+1}=Ax_t+Bu_t
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:3.0954490000000003em;vertical-align:-1.267113em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.66786em;"><span style="top:-2.1em;margin-left:0em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathdefault mtight">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.29634285714285713em;"><span style="top:-2.357em;margin-left:0em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span><span style="top:-2.7em;"><span class="pstrut" style="height:2.7em;"></span><span><span class="mop">min</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.8000999999999999em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.8283360000000004em;"><span style="top:-1.882887em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">t</span><span class="mrel mtight">=</span><span class="mord mtight">0</span></span></span></span><span style="top:-3.050005em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.300005em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.267113em;"><span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8913309999999999em;"><span style="top:-2.4530000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span><span class="mord mathdefault">Q</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.1413309999999999em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathdefault">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8913309999999999em;"><span style="top:-2.4530000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mord"><span class="mord mathdefault">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mord"><span class="mspace nobreak"> </span><span class="mord mathrm">s</span><span class="mord mathrm">.</span><span class="mord mathrm">t</span><span class="mord mathrm">.</span></span><span class="mspace" style="margin-right:1em;"></span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">t</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord mathdefault">A</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord mathdefault" style="margin-right:0.05017em;">B</span><span class="mord"><span class="mord mathdefault">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span></p>
+</li>
+</ul>
+<p><strong>DDP (Differential Dynamic Programming):</strong></p>
+<ul>
+<li>是iLQR的扩展,考虑了二阶导数信息</li>
+<li>在轨迹附近做二次展开</li>
+<li>通过动态规划求解局部二次问题</li>
+<li>Value function的二次近似:$$V(x,t)\approx\frac12x<sup>TV_{xx}x+V_x</sup>Tx+V_0$$</li>
+</ul>
+<ol start="2">
+<li>算法之间的层级关系</li>
+</ol>
+<p>这三种算法可以看作是一个逐步扩展的关系:</p>
+<pre><code>CopySQP(一般非线性优化)
+  ↓
+iLQR(针对轨迹优化的线性化)
+  ↓  
+DDP(考虑二阶信息的iLQR)
+</code></pre>
+<ol start="3">
+<li>主要区别</li>
+</ol>
+<ul>
+<li>适用范围:
+<ul>
+<li>SQP: 通用非线性约束优化问题</li>
+<li>iLQR: 主要用于轨迹优化和最优控制</li>
+<li>DDP: 轨迹优化问题,但计算更精确</li>
+</ul>
+</li>
+<li>计算复杂度:
+<ul>
+<li>SQP: 中等</li>
+<li>iLQR: 较低</li>
+<li>DDP: 较高(需计算二阶导数)</li>
+</ul>
+</li>
+<li>收敛特性:
+<ul>
+<li>SQP: 在满足一定条件下具有二次收敛性</li>
+<li>iLQR: 线性收敛</li>
+<li>DDP: 在局部具有二次收敛性</li>
+</ul>
+</li>
+</ul>
+<ol start="4">
+<li>具体应用场景</li>
+</ol>
+<p><strong>SQP适用于</strong>:</p>
+<ul>
+<li>一般非线性优化问题</li>
+<li>有显式约束的问题</li>
+<li>机器人运动规划的高层优化</li>
+</ul>
+<p><strong>iLQR适用于</strong>:</p>
+<ul>
+<li>机器人轨迹优化</li>
+<li>模型预测控制(MPC)</li>
+<li>连续时间系统控制</li>
+</ul>
+<p><strong>DDP适用于</strong>:</p>
+<ul>
+<li>高精度轨迹优化</li>
+<li>对实时性要求不高的离线优化</li>
+<li>需要考虑系统动力学二阶特性的场合</li>
+</ul>
+<ol start="5">
+<li>理论基础的联系</li>
+</ol>
+<p>所有这些方法都基于以下共同的理论基础:</p>
+<ul>
+<li>泰勒展开近似</li>
+<li>迭代优化策略</li>
+<li>局部二次/线性近似</li>
+<li>KKT条件</li>
+</ul>
+<p>区别在于:</p>
+<ul>
+<li>SQP关注约束处理</li>
+<li>iLQR专注于动力学系统</li>
+<li>DDP增加了二阶动态信息</li>
+</ul>
+<ol start="6">
+<li>计算效率对比</li>
+</ol>
+<p>若问题规模为n,时间步长为T:</p>
+<ul>
+<li>SQP: O(n³)每次迭代</li>
+<li>iLQR: O(Tn)每次迭代</li>
+<li>DDP: O(Tn³)每次迭代</li>
+</ul>
+<p>这些算法的选择通常需要在精度和计算效率之间做权衡。</p>
+<ol start="7">
+<li>总结</li>
+</ol>
+<ul>
+<li>如果是一般非线性优化问题,优先考虑SQP</li>
+<li>如果是实时轨迹优化,优先考虑iLQR</li>
+<li>如果需要高精度且可以接受较高计算成本,考虑DDP</li>
+</ul>
+<p>这三种算法各有特点和适用场景,在实际应用中经常需要根据具体问题特点来选择合适的算法。有时也会将它们结合使用,比如用SQP求解高层规划,用iLQR求解底层轨迹跟踪。</p>
+<h2 id="ilqr和sqp的速度对比">ilqr和SQP的速度对比：</h2>
+<blockquote>
+<p>主要关注iLQR相对于SQP速度更快的原因，以及它们在精度上的权衡。</p>
+</blockquote>
+<ol>
+<li>速度差异的主要原因：</li>
+</ol>
+<p><strong>计算复杂度的来源：</strong></p>
+<p>SQP的主要计算开销：</p>
+<ul>
+<li>需要求解完整的QP子问题</li>
+<li>需要计算和更新Hessian矩阵</li>
+<li>处理一般非线性约束</li>
+<li>求解KKT系统的计算成本高</li>
+</ul>
+<pre><code class="language-python"># SQP的典型迭代过程
+def sqp_iteration(x, constraints):
+    # 1. 计算完整Hessian矩阵 - O(n³)操作
+    H = compute_hessian(x)
+    
+    # 2. 计算所有约束的雅可比矩阵
+    J = compute_jacobian(constraints)
+    
+    # 3. 求解完整的QP子问题 - 需要迭代求解器
+    dx = solve_qp(H, J, constraints)
+    
+    return x + dx
+</code></pre>
+<p>iLQR的计算特点：</p>
+<ul>
+<li>仅处理动力学约束</li>
+<li>利用问题的特殊结构(时序性)</li>
+<li>使用Riccati递归来高效求解</li>
+<li>避免直接处理大规模矩阵</li>
+</ul>
+<pre><code class="language-python"># iLQR的典型迭代过程
+def ilqr_iteration(x_traj, u_traj):
+    # 1. 前向传播 - O(T)操作
+    x_new = forward_rollout(x_traj, u_traj)
+    
+    # 2. 反向传播计算控制更新 - O(T)操作
+    K, k = backward_pass(x_new)
+    
+    # 3. 线性搜索更新轨迹 - O(T)操作
+    x_next, u_next = forward_pass(K, k)
+    
+    return x_next, u_next
+</code></pre>
+<ol start="2">
+<li>精度与速度的权衡：</li>
+</ol>
+<p><strong>iLQR的近似性：</strong></p>
+<p>iLQR确实做了一些近似：</p>
+<ol>
+<li>
+<p>只考虑动力学约束的线性化：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi><mo>(</mo><msub><mi>x</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub><mo separator="true">,</mo><msub><mi>u</mi><mi>t</mi></msub><mo>)</mo><mo>≈</mo><msub><mi>A</mi><mi>t</mi></msub><msub><mi>x</mi><mi>t</mi></msub><mo>+</mo><msub><mi>B</mi><mi>t</mi></msub><msub><mi>u</mi><mi>t</mi></msub></mrow><annotation encoding="application/x-tex">f(x_{t+1}, u_t) \approx A_tx_t + B_tu_t
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">t</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.05017em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathdefault">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span></p>
+</li>
+<li>
+<p>代价函数的二次近似：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>l</mi><mo>(</mo><msub><mi>x</mi><mi>t</mi></msub><mo separator="true">,</mo><msub><mi>u</mi><mi>t</mi></msub><mo>)</mo><mo>≈</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msup><mrow><mo fence="true">[</mo><mtable><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><msub><mi>x</mi><mi>t</mi></msub></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><msub><mi>u</mi><mi>t</mi></msub></mstyle></mtd></mtr></mtable><mo fence="true">]</mo></mrow><mi>T</mi></msup><mrow><mo fence="true">[</mo><mtable><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><msub><mi>Q</mi><mi>t</mi></msub></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><msub><mi>N</mi><mi>t</mi></msub></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><msubsup><mi>N</mi><mi>t</mi><mi>T</mi></msubsup></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><msub><mi>R</mi><mi>t</mi></msub></mstyle></mtd></mtr></mtable><mo fence="true">]</mo></mrow><mrow><mo fence="true">[</mo><mtable><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><msub><mi>x</mi><mi>t</mi></msub></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><msub><mi>u</mi><mi>t</mi></msub></mstyle></mtd></mtr></mtable><mo fence="true">]</mo></mrow></mrow><annotation encoding="application/x-tex">l(x_t,u_t) \approx \frac{1}{2}\begin{bmatrix}x_t\\u_t\end{bmatrix}^T\begin{bmatrix}Q_t &amp; N_t\\N_t^T &amp; R_t\end{bmatrix}\begin{bmatrix}x_t\\u_t\end{bmatrix}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.6318965em;vertical-align:-0.9506654999999999em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner"><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size3">[</span></span><span class="mord"><span class="mtable"><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.45em;"><span style="top:-3.61em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-2.4099999999999997em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathdefault">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.9500000000000004em;"><span></span></span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size3">]</span></span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:1.681231em;"><span style="top:-3.9029000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size3">[</span></span><span class="mord"><span class="mtable"><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.4506655em;"><span style="top:-3.6106654999999996em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathdefault">Q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-2.4093345em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-2.4530000000000003em;margin-left:-0.10903em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.9506654999999999em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.4506655em;"><span style="top:-3.6106654999999996em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.10903em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-2.4093345em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.00773em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.9506654999999999em;"><span></span></span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size3">]</span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size3">[</span></span><span class="mord"><span class="mtable"><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.45em;"><span style="top:-3.61em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-2.4099999999999997em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathdefault">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.9500000000000004em;"><span></span></span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size3">]</span></span></span></span></span></span></span></p>
+</li>
+</ol>
+<p><strong>SQP的精确性：</strong></p>
+<p>SQP保持了更多的问题结构：</p>
+<ol>
+<li>
+<p>完整的约束处理：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>c</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>+</mo><mi mathvariant="normal">∇</mi><mi>c</mi><mo>(</mo><mi>x</mi><msup><mo>)</mo><mi>T</mi></msup><mi mathvariant="normal">Δ</mi><mi>x</mi><mo>≤</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">c(x) + \nabla c(x)^T\Delta x \leq 0
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">c</span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.1413309999999999em;vertical-align:-0.25em;"></span><span class="mord">∇</span><span class="mord mathdefault">c</span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8913309999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span></span></span></span></span></span></span></span><span class="mord">Δ</span><span class="mord mathdefault">x</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span></span></span></span></span></p>
+</li>
+<li>
+<p>更精确的二次近似：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><munder><mi>min</mi><mo>⁡</mo><mrow><mi mathvariant="normal">Δ</mi><mi>x</mi></mrow></munder><mfrac><mn>1</mn><mn>2</mn></mfrac><mi mathvariant="normal">Δ</mi><msup><mi>x</mi><mi>T</mi></msup><msup><mi mathvariant="normal">∇</mi><mn>2</mn></msup><mi>L</mi><mo>(</mo><mi>x</mi><mo separator="true">,</mo><mi>λ</mi><mo>)</mo><mi mathvariant="normal">Δ</mi><mi>x</mi><mo>+</mo><mi mathvariant="normal">∇</mi><mi>f</mi><mo>(</mo><mi>x</mi><msup><mo>)</mo><mi>T</mi></msup><mi mathvariant="normal">Δ</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">\min_{\Delta x} \frac{1}{2}\Delta x^T \nabla^2L(x,\lambda)\Delta x + \nabla f(x)^T\Delta x
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:2.065771em;vertical-align:-0.744331em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.66786em;"><span style="top:-2.055669em;margin-left:0em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">Δ</span><span class="mord mathdefault mtight">x</span></span></span></span><span style="top:-2.7em;"><span class="pstrut" style="height:2.7em;"></span><span><span class="mop">min</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.744331em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mord">Δ</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8913309999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span></span></span></span></span></span></span></span><span class="mord"><span class="mord">∇</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mord mathdefault">L</span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">λ</span><span class="mclose">)</span><span class="mord">Δ</span><span class="mord mathdefault">x</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.1413309999999999em;vertical-align:-0.25em;"></span><span class="mord">∇</span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8913309999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span></span></span></span></span></span></span></span><span class="mord">Δ</span><span class="mord mathdefault">x</span></span></span></span></span></p>
+</li>
+<li>
+<p>具体比较：</p>
+</li>
+</ol>
+<p>速度因素：</p>
+<pre><code>iLQR:
+- 时间复杂度：O(T·n)
+- 存储需求：O(T·n)
+- 每次迭代快速
+
+SQP:
+- 时间复杂度：O(n³)
+- 存储需求：O(n²)
+- 每次迭代较慢
+</code></pre>
+<p>精度因素：</p>
+<pre><code>iLQR:
++ 对轨迹优化问题足够精确
+- 难以处理一般约束
+- 可能错过全局最优
+
+SQP:
++ 可以达到很高精度
++ 可以处理一般约束
++ 在满足条件时可证明局部最优
+</code></pre>
+<ol start="4">
+<li>为什么iLQR在轨迹优化中依然有效：</li>
+</ol>
+<ol>
+<li>问题结构利用：</li>
+</ol>
+<ul>
+<li>利用系统动力学的特殊结构</li>
+<li>时序分解降低计算复杂度</li>
+<li>Riccati方程提供高效求解</li>
+</ul>
+<ol start="2">
+<li>实践考虑：</li>
+</ol>
+<ul>
+<li>实时控制不需要极高精度</li>
+<li>轨迹优化通常只需要局部最优解</li>
+<li>快速迭代更适合在线应用</li>
+</ul>
+<ol start="5">
+<li>数学表达的差异：</li>
+</ol>
+<p>iLQR的优化问题：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><munder><mi>min</mi><mo>⁡</mo><msub><mi>u</mi><mrow><mn>0</mn><mo>:</mo><mi>T</mi><mo>−</mo><mn>1</mn></mrow></msub></munder><munderover><mo>∑</mo><mrow><mi>t</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>T</mi><mo>−</mo><mn>1</mn></mrow></munderover><mi>l</mi><mo>(</mo><msub><mi>x</mi><mi>t</mi></msub><mo separator="true">,</mo><msub><mi>u</mi><mi>t</mi></msub><mo>)</mo><mo>+</mo><msub><mi>l</mi><mi>f</mi></msub><mo>(</mo><msub><mi>x</mi><mi>T</mi></msub><mo>)</mo></mrow><annotation encoding="application/x-tex">\min_{u_{0:T-1}} \sum_{t=0}^{T-1} l(x_t,u_t) + l_f(x_T)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:3.0954490000000003em;vertical-align:-1.267113em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6678600000000001em;"><span style="top:-2.1000000000000005em;margin-left:0em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathdefault mtight">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3448em;"><span style="top:-2.356707142857143em;margin-left:0em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">0</span><span class="mrel mtight">:</span><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.20281428571428572em;"><span></span></span></span></span></span></span></span></span></span><span style="top:-2.7em;"><span class="pstrut" style="height:2.7em;"></span><span><span class="mop">min</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.8419699999999999em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.8283360000000004em;"><span style="top:-1.882887em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">t</span><span class="mrel mtight">=</span><span class="mord mtight">0</span></span></span></span><span style="top:-3.050005em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.300005em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.267113em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.036108em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.01968em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.10764em;">f</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span></p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mtext>s.t.</mtext><mspace width="1em"/><msub><mi>x</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>=</mo><mi>f</mi><mo>(</mo><msub><mi>x</mi><mi>t</mi></msub><mo separator="true">,</mo><msub><mi>u</mi><mi>t</mi></msub><mo>)</mo></mrow><annotation encoding="application/x-tex">\text{s.t.} \quad x_{t+1} = f(x_t,u_t)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8234109999999999em;vertical-align:-0.208331em;"></span><span class="mord text"><span class="mord">s.t.</span></span><span class="mspace" style="margin-right:1em;"></span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">t</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span></p>
+<p>SQP的优化问题：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><munder><mi>min</mi><mo>⁡</mo><mi>x</mi></munder><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\min_x f(x)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.45em;vertical-align:-0.7em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.66786em;"><span style="top:-2.1em;margin-left:0em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">x</span></span></span><span style="top:-2.7em;"><span class="pstrut" style="height:2.7em;"></span><span><span class="mop">min</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mclose">)</span></span></span></span></span></p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mtext>s.t.</mtext><mspace width="1em"/><mi>c</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>≤</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\text{s.t.} \quad c(x) \leq 0
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord text"><span class="mord">s.t.</span></span><span class="mspace" style="margin-right:1em;"></span><span class="mord mathdefault">c</span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span></span></span></span></span></p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>h</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">h(x) = 0
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">h</span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span></span></span></span></span></p>
+<ol start="6">
+<li>具体算法上实车的建议(个人想法)：</li>
+</ol>
+<p>建议：</p>
+<ul>
+<li>如果是轨迹优化问题且需要实时性：选择iLQR</li>
+<li>如果需要精确解且有复杂约束：选择SQP</li>
+<li>如果是实时MPC应用：可以考虑iLQR变体</li>
+</ul>
+<p>实践中要注意的：</p>
+<ul>
+<li>iLQR的速度优势主要来自问题结构的利用</li>
+<li>精度牺牲通常在实际应用中是可接受的</li>
+<li>可以通过增加迭代次数来提高iLQR精度</li>
+<li>在某些场景下可以混合使用两种方法</li>
+</ul>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[关于]]></title>
+        <id>https://blog.ogier-maxwell.top/post/about/</id>
+        <link href="https://blog.ogier-maxwell.top/post/about/">
+        </link>
+        <updated>2024-12-12T11:09:48.000Z</updated>
+        <content type="html"><![CDATA[<blockquote>
+<p>欢迎来到我的小站呀，很高兴遇见你！🤝</p>
+</blockquote>
+<h2 id="关于本站">🏠 关于本站</h2>
+<p>懒狗随便写写东西</p>
+<h2 id="博主是谁">👨‍💻 博主是谁</h2>
+<p>啥也不是</p>
+<h2 id="兴趣爱好">⛹ 兴趣爱好</h2>
+<ul>
+<li>音乐</li>
+<li>游戏</li>
+<li>健身</li>
+<li>写代码(不是)</li>
+</ul>
+<h2 id="联系我呀">📬 联系我呀</h2>
+<p><a href="https://github.com/1lonely6legend">Github</a></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[virtual override final]]></title>
+        <id>https://blog.ogier-maxwell.top/post/virtual-override-final/</id>
+        <link href="https://blog.ogier-maxwell.top/post/virtual-override-final/">
+        </link>
+        <updated>2024-04-20T04:07:50.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="virtual关键字">virtual关键字</h2>
+<h3 id="virtual使用简介">virtual使用简介</h3>
+<p>virtual在基类中确定了一个虚拟函数，在派生类中使用重写虚拟函数来实现对基类虚拟函数的覆盖</p>
+<pre><code class="language-cpp">class Base{
+	public:
+		Base(){};
+		virtual void print(){
+			cout&lt;&lt;&quot;Base&quot;;
+	}
+};
+
+class Derived : public Base{
+	Public:
+		void print(){
+			cout&lt;&lt;&quot;Derived&quot;;
+		}
+};
+</code></pre>
+<p>当类型为基类Base的指针指向了一个Drived型的对象时，调用Print()函数，此时调用的是Drived类中的print函数而不是Base类中的函数。</p>
+<blockquote>
+<p>这是面向对象中<strong>多态性</strong>的一种体现。</p>
+</blockquote>
+<h3 id="函数重载和覆盖的不同点">函数重载和覆盖的不同点</h3>
+<ul>
+<li>重载的函数位于同一类中，覆盖(override)的函数应位于有继承关系的不同类中</li>
+<li>重载的函数要求函数名称相同，但是参数不同，由此编译器在可以通过参数来判断调用的是哪个函数。而覆盖的几个函数必须要求函数名、参数、返回值都相同。</li>
+<li>重载和关键词virtual无关。覆盖的函数在前面必须加上关键词virtual</li>
+</ul>
+<h3 id="关于函数覆盖的一些隐藏规则">关于函数覆盖的一些隐藏规则：</h3>
+<ol>
+<li>如果<strong>派生类的函数与基类的函数同名</strong>，但是参数不同。此时，不论有无virtual关键字，基类的函数将被隐藏（注意别与重载混淆）。</li>
+<li>如果派生类的函数与基类的函数同名，并且参数也相同，但是基类函数没有virtual关键字。此时，基类的函数被隐藏（注意别与覆盖混淆）。</li>
+</ol>
+<h3 id="纯虚函数virtual-0可以用来定义接口">纯虚函数virtual ··· = 0,可以用来定义接口</h3>
+<p>当定义纯虚函数时，可以指定让<strong>继承类所实现的接口</strong>。但是基类并不能被基类调用，纯虚函数也不需要实现，只需要声明即可。</p>
+<p>纯虚函数的声明如下所示：</p>
+<pre><code class="language-cpp">class Asd{
+	public:
+		virtual ostream&amp; print(ostream&amp;=cout) = 0;//函数声明后面紧跟赋值为0
+};
+</code></pre>
+<p>如果一个<strong>类包含纯虚拟函数，那么就是一个抽象基类</strong>，如果你试图创建一个抽象基类的对象会报错</p>
+<p><strong>C++中的接口通常被定义为一个抽象基类</strong>，也就是只包含纯虚函数的类。纯虚函数是一种特殊的虚函数，它没有实现，只有函数原型。</p>
+<p>它的作用就是要求实现该接口的具体类必须提供该函数的具体实现。</p>
+<h3 id="虚析构">虚析构</h3>
+<p>如果一个<strong>类用作基类</strong>，我们通常需要<strong>virtual来修饰它的析构函数</strong>，这点很重要。如果基类的析构函数不是虚析构，当我们用delete来释放基类指针(它其实指向的是派生类的对象实例)占用的内存的时候，只有基类的析构函数被调用，而派生类的析构函数不会被调用，这就可能引起内存泄露。<strong>如果基类的析构函数是虚析构，那么在delete基类指针时，继承树上的析构函数会被自低向上依次调用，即最底层派生类的析构函数会被首先调用，然后一层一层向上直到该指针声明的类型</strong>。</p>
+<p>使用虚析构是防止只调用了基类的析构函数，而没有调用继承类的析构函数。</p>
+<h3 id="虚继承-virtual-public">虚继承 virtual public</h3>
+<p>举个例子，首先我们定义基类A，再从基类A中派生出两种不同的继承类B和C。</p>
+<pre><code class="language-cpp">class A{
+	public:
+		fun();
+};
+
+class B : public A{```};
+class C : public A{```};
+</code></pre>
+<p>而当我们使用B和C作为基类派生出D时，就出现了问题。每个D的对象中包含了B 和 C的基类对象数据，即包含两个A对象。</p>
+<p>而我们实际上只需要一个A对象，但实际上存储了两个，浪费了存储区。此外在这个过程中，A的构造函数被调用了两次（B和C各一次）</p>
+<p>最严重的引起的二义性，当调用D中的A成员时到底是哪个？由此引入了虚拟继承。</p>
+<p>我们可以使用关键字Virtual修正，一个基类的声明可以将它指定为被虚拟派生。</p>
+<pre><code class="language-cpp">// 这里关键字 public 和 virtual的顺序不重要
+class Bear : public virtual ZooAnimal { ... };
+class Raccoon : virtual public ZooAnimal { ... };
+</code></pre>
+<p>虚拟派生不是基类本身的一个显式特性，而是它与派生类的关系。如前面所说明的，虚拟继承提供了“按引用组合”。也就是说，对于子对象及其非静态成员的访问是间接进行的。这使得在多继承情况下，把多个虚拟基类子对象组合成派生类中的一个共享实例，从而提供了必要的灵活性。同时，即使一个基类是虚拟的，我们仍然可以通过该基类类型的指针或引用，来操纵派生类的对象。</p>
+<h2 id="override关键字">override关键字</h2>
+<h3 id="override-简介">override 简介</h3>
+<p>C++ override从字面意思上，是覆盖的意思，实际上在C++中它是覆盖了一个方法并且对其重写，从而达到不同的作用。override是C++11中的一个继承控制关键字。<strong>override确保在派生类中声明的重载函数跟基类的虚函数有相同的声明。</strong></p>
+<p>override明确地表示一个函数是对基类中一个虚函数的覆盖。更重要的是，它会<strong>检查基类虚函数和派生类中重载函数的签名不匹配问题。如果签名不匹配，编译器会发出错误信息。</strong></p>
+<p>在我们C++编程过程中，最熟悉的就是对接口方法的实现，在接口中一般只是对方法进行了声明，而我们在实现时，就需要实现接口声明的所有方法。还有一个典型应用就是在继承中也可能会在子类覆盖父类的方法。</p>
+<h3 id="实际在基类和派生类的作用">实际在基类和派生类的作用</h3>
+<p>首先定义一个Person类，含有纯虚函数、虚函数以及普通函数</p>
+<pre><code class="language-cpp">class Person{
+public:
+	virtual void creat() const = 0;               // 1.纯虚函数
+	virtual void say(const std::string&amp; msg);   // 2.普通虚函数
+	int name() const;                           // 3.非虚函数
+};
+
+class Student : public Person{
+	public:
+	protected:
+	private:
+};
+
+class Teacher : public Person{
+	public:
+	protected:
+	private:
+};
+
+</code></pre>
+<h4 id="纯虚函数">纯虚函数</h4>
+<p>纯虚函数，<strong>继承的是基类成员函数的接口</strong>，<em><strong>必须</strong></em>在派生类中重写该函数的实现：</p>
+<pre><code class="language-cpp">class Student : public Person{
+	public: void creat(){
+		Person* s1 = new Student; 
+	}// calls Student::creat();
+	protected:
+	private:
+};
+
+class Teacher : public Person{
+	public: void creat(){
+		Person* s1 = new Teacher; 
+	}// calls Teacher::eat();
+	protected:
+	private:
+}; 
+</code></pre>
+<p>并且基类的eat为纯虚函数不可被调用</p>
+<h4 id="普通虚函数">普通虚函数</h4>
+<p>普通虚函数，对应在基类中<strong>定义一个缺省的实现</strong> (default implementation)，表示继承的是<strong>基类成员函数的接口和缺省的实现</strong>，由派生类<strong>自行选择</strong>是否重写该函数。</p>
+<p>实际上，允许普通虚函数同时继承接口和缺省实现是危险的。 如下, CarA 和 CarB 是 Car的两种类型，且二者的运行方式完全相同。</p>
+<pre><code class="language-cpp">class Car{
+public:
+	virtual void run(const Car&amp; destination);
+
+};
+
+class CarA : public Car{
+  public:
+  protected:
+  private:
+};
+
+class CarB : public Car{
+  public:
+  protected:
+  private:
+};
+</code></pre>
+<p>这是典型的面向对象设计，两个类共享一个特性 – run，则 run可在基类中实现，并由两个派生类继承。</p>
+<hr>
+<p>现增加一个新的飞机型号 CarC，其飞行方式与 CarA，CarB 并不相同，假如不小心忘了在 CarC 中重写新的 fly 函数.</p>
+<pre><code class="language-cpp">class CarC : public Car
+{
+public:
+	... // no fly function is declared
+};
+</code></pre>
+<p>则调用 CarC 中的 run 函数，就是调用 Car::run，但是 CarC的运行方式和缺省的并不相同</p>
+<pre><code class="language-cpp">Car * car1 = new CarC;
+car1-&gt;run(China);  // calls Car::run!!
+</code></pre>
+<p>这就是前面所说的，普通虚函数同时继承接口和缺省(默认参数)实现是危险的，最好是基类中实现缺省行为 (behavior)，但只有在派生类要求时才提供该缺省行为.</p>
+<h5 id="纯虚函数-缺省实现">纯虚函数 + 缺省实现</h5>
+<p>一种方法是 纯虚函数 + 缺省实现，因为是纯虚函数，所以只有接口被继承，其缺省的实现不会被继承。派生类要想使用该缺省的实现，必须显式的调用:</p>
+<pre><code class="language-cpp">class Car
+{
+public:
+	virtual void run(const Car&amp; destination) = 0;//纯虚函数
+
+};
+
+void Car::run(const Car&amp; destination)
+{
+	// a pure virtual function default code for run a Car to the given destination
+}//纯虚函数其实都不需要写实现
+
+class CarA : public Car
+{
+public:
+	virtual void run(const Car&amp; destination)
+	{
+		Car::run(destination);
+	}
+
+};
+</code></pre>
+<p>这样在派生类 CarC 中，即使一不小心忘记重写 Run函数，也不会调用 Car的缺省实现.</p>
+<pre><code class="language-cpp">class CarC : public Car
+{
+public:
+	virtual void run(const Car&amp; destination);
+};
+
+void CarC::run(const Car&amp; destination)
+{
+	// code for run a CarC Car to the given destination
+}
+</code></pre>
+<h5 id="使用override">使用override</h5>
+<p>可以看到，上面问题的关键就在于，一不小心在派生类 CarC中忘记重写 run函数，C++11 中使用关键字 override，可以避免这样的“一不小心”。</p>
+<p>非虚函数：<br>
+非虚成员函数没有virtual关键字，表示派生类不但继承了接口，而且继承了一个强制实现（mandatory implementation），既然继承了一个强制的实现，则在派生类中，<strong>无须重新定义继承自基类的成员函数</strong>，如下：</p>
+<p>使用指针调用 name 函数，则都是调用的 Person::name()</p>
+<pre><code class="language-cpp">Student s1;  // s1 is an object of type Student
+
+Person* p1 = &amp;s1;  // get pointer to s1
+p1-&gt;name();        //call name() through pointer
+
+Student* s2 = &amp;s1;   // get pointer to s1
+s2-&gt;name();          // call name() through pointer
+</code></pre>
+<hr>
+<p>如果在派生类中重新定义了继承自基类的成员函数 name :</p>
+<pre><code class="language-cpp">class Student : public Person
+{
+public:
+   int name() const; // hides Person::name();
+
+};
+
+p1-&gt;name();        //call name() through pointer
+s2-&gt;name();          // call name() through pointer
+</code></pre>
+<p>此时，派生类中重新定义的成员函数会 “隐藏” (hide) 继承自基类的成员函数。</p>
+<blockquote>
+<p><strong>这是因为非虚函数是 “静态绑定” 的</strong>，p1被声明的是 Person* 类型的指针，则通过 p1调用的非虚函数都是基类中的，即使 指向的是派生类。</p>
+</blockquote>
+<blockquote>
+<p>与“静态绑定”相对的是虚函数的“动态绑定”，即无论 p1被声明为 Person* 还是 Student* 类型，其调用的虚函数取决于p1实际指向的对象类型。</p>
+</blockquote>
+<h3 id="使用原则">使用原则</h3>
+<ul>
+<li>基类函数没加virtual，子类有相同函数，实现的是覆盖。用基类指针调用时，调用到的是基类的函数；用子类指针调用时，调用到的是子类的函数。</li>
+<li>基类函数加了virtual时，实现的是重写。用基类指针或子类指针调用时，调用到的都是子类的函数。</li>
+<li>函数加上override，强制要求基本相同函数需要是虚函数，否则会编译报错。相当于是一个保险，防止基类没写virtual？</li>
+<li>子类的virtual可加可不加，建议加override不加virtual。</li>
+<li>C++11 中的 override 关键字，可以<strong>显式的在派生类中声明</strong>，<em><strong>哪些成员函数需要被重写，如果没被重写，则编译器会报错。</strong></em></li>
+</ul>
+<h3 id="常见用法">常见用法</h3>
+<ul>
+<li>virtual一般用在继承的关系中。</li>
+<li>如果这个方法无需子类定义，则该方法不用virtual进行修饰。</li>
+<li>如果这个方法需要子类重写，但有默认实现，则该方法需要virtual进行修饰。</li>
+<li>如果这个方法只需要子类实现，父类无需处理，则该方法可以定义为纯虚方法：virtual fun()=0</li>
+<li>在继承的关系中，基类的析构方法，需要定义为虚函数，以避免子类无法析构。</li>
+<li>构造函数不存在虚函数，因为在创建对象时，需要确切地知道是那个类（静态绑定），而需函数时动态绑定，在构造类时不能确定类的信息是错误的。</li>
+</ul>
+<hr>
+<h2 id="final关键字">final关键字</h2>
+<p>如果某个类/函数已做好了充分的准备并可供其他类使用的话（即其接口已明确定义且以后不会修改），那么该类/函数就是封闭（你可以称之为完整）的,这时可以使用<strong>final</strong></p>
+<h3 id="最重要的两个作用">最重要的两个作用</h3>
+<ul>
+<li>禁止虚函数被重写</li>
+<li>禁止基类被继承</li>
+</ul>
+<p>final:指定<strong>不能在派生类中重写虚函数</strong>或<strong>不能从中继承类</strong>。</p>
+<p>在虚函数声明或定义中使用时，final确保函数是虚函数，并指定它不能被派生类重写。否则程序格式错误（生成编译时错误）。</p>
+<p>在类定义中使用时，final指定该类不能出现在另一个类定义的基说明符列表中（换句话说，不能从中派生）。否则程序格式错误（生成编译时错误）。final也可以与union定义一起使用，在这种情况下，它没有任何影响（除了std:：is_final的结果），因为联合不能从派生）</p>
+<p>final是在成员函数声明或类头中使用时具有特殊含义的标识符。在其他上下文中，它不是保留的，可以用来命名对象和函数。</p>
+<p>C++ 11还增加了防止继承类或简单地防止派生类中重写方法的能力。这是用特殊标识符final完成的。</p>
+<p>final<strong>阻止类的进一步派生</strong>和<strong>阻止虚函数的进一步重写</strong></p>
+<p>C++ 11关键字的最终目的有两个。它<strong>阻止从类继承，并禁止重写虚函数</strong>。</p>
+<p>有时，你不想让派生类重写基类的虚函数。C++ 11允许内置的工具防止使用最终说明符重写虚函数。</p>
+<p>C++ 11中的最后关键字可以应用于整个类或方法。当应用于一个类时，它表示该类不允许派生；也就是说，不能创建从最终类派生的类。第二种方法是将final应用于方法时，这样可以防止方法被派生类重写（尽管仍然可以创建子类）。</p>
+<h3 id="例子">例子</h3>
+<h4 id="阻止基类函数的覆盖">阻止基类函数的覆盖</h4>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+ 
+class Base {//最底层的类
+public:
+	Base() {
+ 
+	}
+public:
+	virtual void func()  = 0 ;
+	virtual void func2() = 0;
+};
+ 
+class Son :public Base{//第二层类
+public:
+	Son()
+	{
+ 
+	}
+public:
+	void func()
+	{
+		std::cout &lt;&lt; &quot;son func &quot;&lt;&lt; std::endl;
+	}
+	void func2() final//定义func2 为final 不能被重写覆盖
+	{
+		std::cout &lt;&lt; &quot;son func2 &quot; &lt;&lt; std::endl;
+ 
+	}
+ 
+};
+ 
+class Son2 :public Son{//继承自第二层的类，不能重写final函数func2（）
+	void func()
+	{
+		std::cout &lt;&lt; &quot;son2 func &quot; &lt;&lt; std::endl;
+	}
+};
+ 
+ 
+int main()
+{
+	Base* p = new Son2;
+	p-&gt;func2();//son func2
+}
+</code></pre>
+<h4 id="阻止类的继承">阻止类的继承</h4>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+ 
+class Base final {//final类，不能被继承 断子绝孙类
+public:
+	Base() {
+ 
+	}
+public:
+	virtual void func()  = 0 ;
+	virtual void func2() = 0;
+};
+
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[基础自动驾驶规划算法知识总结梳理]]></title>
+        <id>https://blog.ogier-maxwell.top/post/ji-chu-zi-dong-jia-shi-gui-hua-suan-fa-zhi-shi-zong-jie-shu-li/</id>
+        <link href="https://blog.ogier-maxwell.top/post/ji-chu-zi-dong-jia-shi-gui-hua-suan-fa-zhi-shi-zong-jie-shu-li/">
+        </link>
+        <updated>2024-04-19T04:24:00.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="search-base">search base</h1>
+<h2 id="三种常见搜索算法的对比">三种常见搜索算法的对比</h2>
+<img src="https://raw.githubusercontent.com/1lonely6legend/image-hosting/main/202403271016987.png" alt="image-20240327101612126" style="zoom:33%;" />
+<h2 id="bfs">BFS</h2>
+<img src="https://raw.githubusercontent.com/1lonely6legend/image-hosting/main/202403271020470.png" alt="image-20240327102000818" style="zoom:33%;" />
+<h2 id="dijkstra">dijkstra</h2>
+<blockquote>
+<p>dijkstra和BFS的区别,就是BFS只能适用于无权图,也就是认为每条路径都是一样的</p>
+<p>如果对于一个无权图,使用BFS和Dijkstra是一样的效果</p>
+<p>dijkstra等于是引入了一个两点之间移动的权重代价</p>
+</blockquote>
+<img src="https://raw.githubusercontent.com/1lonely6legend/image-hosting/main/202403271003458.png" alt="image-20240327100350249" style="zoom: 33%;" />
+<h2 id="a">a*</h2>
+<blockquote>
+<p>相比较于dijkstra引入启发式函数，包含距离起始点的距离以及对目标点的距离估计,可以加快搜索时间,启发式函数可以引导搜索过程</p>
+</blockquote>
+<img src="https://raw.githubusercontent.com/1lonely6legend/image-hosting/main/202403271009092.png" alt="image-20240327100903945" style="zoom:33%;" />
+<p>astar常用的启发式函数:</p>
+<h4 id="欧几里得距离">欧几里得距离</h4>
+<p>就是简单的直线连接距离</p>
+<h4 id="曼哈顿距离">曼哈顿距离</h4>
+<p>两个点之间xy坐标分别做差之和,就是走直线最短距离</p>
+<h3 id="启发式函数设计的原理">启发式函数设计的原理:</h3>
+<p><strong>保证启发式函数要小于等于两点之间的真实值,这样才能保证找到最优路径,</strong></p>
+<p><strong>当启发式函数等于实际距离值,这样估计很准确,可以做到最优的搜索效率</strong></p>
+<p>对于四联通,欧几里得和曼哈顿都可以</p>
+<p>对于八联通,曼哈顿不行,因为八联通可以走斜线,不能保证曼哈顿估计的距离小于实际距离</p>
+<img src="https://raw.githubusercontent.com/1lonely6legend/image-hosting/main/202403271014062.png" alt="image-20240327101442055" style="zoom:33%;" />
+<hr>
+<h1 id="sample-base">sample base</h1>
+<ol>
+<li>在图中生成种子(确定搜索起始点)</li>
+<li>使用何种采样方式在图中采样</li>
+<li>选择和哪个周围节点进行连接</li>
+<li>选择那条边或者删除</li>
+</ol>
+<h2 id="prm-随机概率路径图">PRM 随机概率路径图</h2>
+<blockquote>
+<p>优点:</p>
+<ol>
+<li>具有概率完备性,如果点采的够多,一定可以取到最优路径</li>
+</ol>
+<p>缺点:</p>
+<ol>
+<li>PRM是在完整的状态空间中进行采样的,相当于采样版本的dijkstra. 在当我们曲寻找特定初始点与目标点时,会有许多无用的扩展.</li>
+<li>并且PRM是直接使用直线来连接采样点,不符合车辆的动力学约束</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol>
+<li>随机撒点,采样越多,对地图的信息掌握越多(这一步就删除所有碰撞点)</li>
+<li>如果中间没有障碍物的话,连接相邻的(一定距离内)节点生成图(删除与障碍物碰撞的连接线)</li>
+<li>在图中进行搜索,例如a*,dijkstra</li>
+</ol>
+</blockquote>
+<p>下面sPRM是不剔除边,所有的都连接上</p>
+<img src="https://raw.githubusercontent.com/1lonely6legend/image-hosting/main/202403271031641.png" alt="image-20240327103113452" style="zoom:33%;" />
+<p>几种改进之后的PRM算法:</p>
+<ol>
+<li><strong>k-nearest PRM</strong>
+<ol>
+<li>并不是连接一定距离之内的点,而是连接距离最近的前k个点</li>
+</ol>
+</li>
+<li><strong>Bounded-degree PRM</strong> 有界维度的PRM
+<ol>
+<li>相当于原始PRM和k-nearest PRM</li>
+<li>首先按原始PRM进行取,如果一个节点的一定范围的连接点太多,则使用前k个点连接</li>
+</ol>
+</li>
+<li>Variable-radius PRM 可变半径的PRM
+<ol>
+<li>把确定周围连接节点距离的半径r,设计成一个与采样点个数n相关的函数</li>
+<li>如果采样点越多则减小,采样半径r</li>
+</ol>
+</li>
+</ol>
+<h3 id="prm-一种variable-radius-prm-可变半径的prm">PRM* 一种Variable-radius PRM 可变半径的PRM</h3>
+<img src="https://raw.githubusercontent.com/1lonely6legend/image-hosting/main/202403271221366.png" alt="image-20240327122131298" style="zoom:33%;" />
+<h2 id="rrt-快速生成随机树">RRT 快速生成随机树</h2>
+<blockquote>
+<p>优点:</p>
+<ol>
+<li>如果只是需要构建一条起点到终点的路径,相比于PRM,更为高效</li>
+</ol>
+<p>缺点:</p>
+<ol>
+<li>不具有概率完备性,只会和距离最近的采样点连接</li>
+</ol>
+</blockquote>
+<img src="https://raw.githubusercontent.com/1lonely6legend/image-hosting/main/202403271226928.png" alt="image-20240327122649902" style="zoom: 25%;" />
+<blockquote>
+<p>RRT所构建的是一个树,而不是图. 设置搜索起始点作为根节点</p>
+<p>这样在只需要寻找两点之间的路径时,相比较于PRM搜索效率高很多</p>
+<p>RRT 每次扩展节点时,都试图和目标节点做一次连接测试</p>
+</blockquote>
+<ol>
+<li>首先初始化在RRT中要维护的两个结构,一个时包含顶点的集合V以及包含路径的集合E</li>
+<li>开始主循环,设定最大采样次数n次
+<ol>
+<li>首先进行随机采样,得到X_rand</li>
+<li>找到采样点中,距离当前书最近的节点,进行连接</li>
+<li>并不是直接连接两点,而是向最近点方向走一个确定的步长</li>
+<li>进行一个碰撞检测</li>
+<li>判断连接终点是否能连接到树上</li>
+</ol>
+</li>
+</ol>
+<img src="https://raw.githubusercontent.com/1lonely6legend/image-hosting/main/202403271228591.png" alt="image-20240327122843623" style="zoom: 50%;" />
+<h3 id="rrg-一种具备概率完备性的rrt变体">RRG 一种具备概率完备性的RRT变体</h3>
+<p>与RRT的主要不同对应于第九第十行:</p>
+<ul>
+<li>RRT中直接将最近节点向采样节点进行固定距离延申</li>
+<li>RRG改变了连接方式,每次不是直接向采样节点延申,而是考虑以采样点为中心的一个园,将圆内所有节点与采样点的无碰撞路径都进行连接,最终其实构建的是一个图</li>
+</ul>
+<img src="https://raw.githubusercontent.com/1lonely6legend/image-hosting/main/202403271250120.png" alt="image-20240327125046214" style="zoom:33%;" />
+<h3 id="kinematic_based-rrt-一种考虑车辆运动学的rrt">kinematic_based RRT 一种考虑车辆运动学的RRT</h3>
+<p>与RRT唯一的区别在于第五行,连接采样点时,基于某种运动学的方法连接(dubin RS曲线等)</p>
+<img src="https://raw.githubusercontent.com/1lonely6legend/image-hosting/main/202403271256942.png" alt="image-20240327125610929" style="zoom: 33%;" />
+<h2 id="rrt-优化快速随机生成树">RRT* 优化快速随机生成树</h2>
+<p>与上面两种方法的对比</p>
+<ul>
+<li>相比较与RRG,保留了树形的搜索结构,在结构中去掉了冗余的边</li>
+<li>相比较与RRT,添加了一个<strong>重构</strong>的过程,确保顶点可以取到最小代价的路径</li>
+</ul>
+<img src="https://raw.githubusercontent.com/1lonely6legend/image-hosting/main/202403271259308.png" alt="image-20240327125945492" style="zoom:33%;" />
+<p>算法整体框架:</p>
+<p><img src="https://raw.githubusercontent.com/1lonely6legend/image-hosting/main/202403271911659.png" alt="image-20240327191102984" style="zoom:33%;" />           <img src="https://raw.githubusercontent.com/1lonely6legend/image-hosting/main/202403271918602.png" alt="image-20240327191825262" style="zoom: 50%;" /></p>
+<ol>
+<li>首先前面部分和普通的RPM一样,采样点,找距离树的最近点,确定最近点X_new</li>
+<li>对于最近点利用RRG的特点,连接X_new,半径r内的所有节点</li>
+<li>然后遍历半径r内的所有节点,选择cost(距离起点,距离x_new)最小的那个点来连接,这个点为x_min</li>
+<li><strong>进行修剪</strong>,遍历x_near(半径r内的点),查看是否可以通过x_new来得到一条剧起点cost更小的节点,如果有,就重新连接</li>
+</ol>
+<h2 id="cl-rrt-closed-loop-rrt">CL-RRT closed-loop RRT</h2>
+<img src="https://raw.githubusercontent.com/1lonely6legend/image-hosting/main/202403271938939.png" alt="image-20240327193801552" style="zoom:50%;" />
+<ul>
+<li>就是将RRT得到的一个折线结果,当成一个粗解,</li>
+<li>然后使用控制器(解耦控制)
+<ul>
+<li>横向控制器(steer),纯跟踪控制器,输出为方向盘转角序列,也就是给出一条轨迹</li>
+</ul>
+</li>
+<li>根据粗解进行优化,从而进行控制
+<ul>
+<li>纵向控制器(speed),选择经典的pi控制器,输出速度序列</li>
+</ul>
+</li>
+</ul>
+<h3 id="cl_rrt的采样策列">cl_rrt的采样策列</h3>
+<p>并不是在空间xy上进行采样,而是在r \theta 空间中进行采样,也就是在一个个同心圆以及不同角度上进行采样,相当于极坐标系采样</p>
+<h3 id="cl_rrt最近节点选择策略">cl_rrt最近节点选择策略</h3>
+<p>使用dubins曲线来判断最近节点,而不是选择直线最短节点</p>
+<h1 id="kinematic-base">kinematic base</h1>
+<h2 id="dubins-reeds-shepp曲线作为运动基元">dubins reeds-shepp曲线作为运动基元</h2>
+<h3 id="dubins-只有6种组合可能">dubins 只有6种组合可能</h3>
+<img src="https://raw.githubusercontent.com/1lonely6legend/image-hosting/main/202403271950472.png" alt="image-20240327195036713" style="zoom:33%;" />
+<h3 id="reeds-shepp-48种组合可能">reeds-shepp 48种组合可能</h3>
+<img src="C:/Users/ogier/AppData/Roaming/Typora/typora-user-images/image-20240327195119737.png" alt="image-20240327195119737" style="zoom:33%;" />
+<h2 id="多项式曲线作为运动基元">多项式曲线作为运动基元</h2>
+<h3 id="五次多项式-quintic-polynomial-solver">五次多项式 quintic polynomial solver</h3>
+<blockquote>
+<p>为什么使用五次多项式: 使用五次多项式对jerk进行优化,五次多项式得到的路径一定是<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>j</mi><mi>e</mi><mi>r</mi><msup><mi>k</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">jerk^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.008548em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.05724em;">j</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span>最小的</p>
+</blockquote>
+<img src="https://raw.githubusercontent.com/1lonely6legend/image-hosting/main/202403271953587.png" alt="image-20240327195308552" style="zoom:25%;" />
+<p>使用初始状态和终点状态,各三个一共六个参数,可以列出六个方程,确定五次多项式函数中的六个参数</p>
+<ul>
+<li>所以说巡航轨迹规划中,不用考虑末状态的x值,只有五个参数,所以可以使用四次多项式来拟合</li>
+</ul>
+<h3 id="在st-lt上进行采样">在st lt上进行采样</h3>
+<img src="https://raw.githubusercontent.com/1lonely6legend/image-hosting/main/202403271956052.png" alt="image-20240327195627116" style="zoom:25%;" />
+<h3 id="在sl-st上进行采样">在sl st上进行采样</h3>
+<img src="https://raw.githubusercontent.com/1lonely6legend/image-hosting/main/202403272000485.png" alt="image-20240327200043292" style="zoom: 33%;" />
+<h2 id="螺旋曲线作为运动基元spiral-curve">螺旋曲线作为运动基元(spiral Curve)</h2>
+<p>确定两个点之间的螺旋曲线,其实是一个BVP问题</p>
+<blockquote>
+<p>曲率的定义,曲率的定义就是航向角关于弧长的变化率<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>κ</mi><mo>=</mo><mfrac><mrow><mi>d</mi><mi>θ</mi></mrow><mrow><mi>d</mi><mi>s</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">\kappa=\frac{d\theta}{ds}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">κ</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.2251079999999999em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8801079999999999em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">d</span><span class="mord mathdefault mtight">s</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">d</span><span class="mord mathdefault mtight" style="margin-right:0.02778em;">θ</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>,所以曲率关于弧长的积分其实就是航向角的变化</p>
+</blockquote>
+<ul>
+<li>螺旋曲线的定义:一个曲率对弧长的函数<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>κ</mi><mo>(</mo><mi>s</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\kappa(s)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">κ</span><span class="mopen">(</span><span class="mord mathdefault">s</span><span class="mclose">)</span></span></span></span>,在每一点的弧长处,我的曲率是多少</li>
+<li>**优点:**通过此特性,很容易限制路径曲率的变化</li>
+<li>使用三次螺旋曲线来计算<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>κ</mi><mo>(</mo><mi>s</mi><mo>)</mo><mo>=</mo><mi>d</mi><msup><mi>s</mi><mn>3</mn></msup><mo>+</mo><mi>c</mi><msup><mi>s</mi><mn>2</mn></msup><mo>+</mo><mi>b</mi><mi>s</mi><mo>+</mo><mi>a</mi></mrow><annotation encoding="application/x-tex">\kappa(s)=ds^3+cs^2+bs+a</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">κ</span><span class="mopen">(</span><span class="mord mathdefault">s</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.897438em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">d</span><span class="mord"><span class="mord mathdefault">s</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.897438em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">c</span><span class="mord"><span class="mord mathdefault">s</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.77777em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">b</span><span class="mord mathdefault">s</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">a</span></span></span></span></li>
+</ul>
+<img src="https://raw.githubusercontent.com/1lonely6legend/image-hosting/main/202403272011439.png" style="zoom: 33%;" />
+<h4 id="使用simpson方法求积分">使用simpson方法求积分</h4>
+<img src="https://raw.githubusercontent.com/1lonely6legend/image-hosting/main/202403272028684.png" alt="image-20240327202858712" style="zoom:33%;" />
+<p>使用一个二次函数来近似原函数的值:</p>
+<p>使用近似三个点来拟合出一条二次曲线,然后使用红色曲线积分值来近似蓝色曲线的积分值</p>
+<img src="https://raw.githubusercontent.com/1lonely6legend/image-hosting/main/202403272034468.png" alt="image-20240327203433250" style="zoom:33%;" />
+<p>具体怎么计算求螺旋曲线参数,还是要看视频啊</p>
+<h2 id="混合a">混合a*</h2>
+<p>hA*中,在同一个栅格中保存一个最优解</p>
+<blockquote>
+<p>混合a*一般是找不到最优解,因为有剪枝操作,并且是在控制空间进行采样的,例如只有方向盘转角的最大最小值,0,无法采样到最优的路径</p>
+</blockquote>
+<img src="https://raw.githubusercontent.com/1lonely6legend/image-hosting/main/202403272046226.png" alt="image-20240327204612127" style="zoom:33%;" />
+<img src="https://raw.githubusercontent.com/1lonely6legend/image-hosting/main/202403272047654.png" alt="image-20240327204712381" style="zoom:33%;" />
+<h3 id="混合a的两种启发式函数设计">混合a*的两种启发式函数设计</h3>
+<h4 id="不考虑障碍物的启发式函数">不考虑障碍物的启发式函数</h4>
+<ul>
+<li>考虑车辆的运动学约束,不考虑障碍物</li>
+<li>使用reeds-shepp曲线长度来作为启发式距离</li>
+<li>可以满足启发式距离小于 &lt; 实际距离</li>
+</ul>
+<h4 id="考虑障碍物的启发式函数">考虑障碍物的启发式函数</h4>
+<ul>
+<li>忽略车辆的运动学特征,只考虑环境中的障碍物</li>
+<li>可以使用简单的a*作为启发式函数</li>
+</ul>
+<h4 id="同时使用上面两种启发式函数通过调整权重加速搜索">同时使用上面两种启发式函数,通过调整权重,加速搜索</h4>
+<h3 id="一种分层规划的思想">一种分层规划的思想</h3>
+<ul>
+<li>首先使用混合a*来生成一个粗略的解</li>
+<li>使用优化的方法在局部进行调整</li>
+<li>
+<img src="https://raw.githubusercontent.com/1lonely6legend/image-hosting/main/202403272055506.png" alt="image-20240327205508995" style="zoom:25%;" />
+</li>
+</ul>
+<h2 id="state-lattice">State Lattice</h2>
+<blockquote>
+<p>一种基于逆向运动学的规划方法</p>
+</blockquote>
+<ol>
+<li>首先在fernet坐标系下进行采样
+<ul>
+<li>在frenet下采样,一般用五次多项式拟合</li>
+<li>在cartesian坐标系采样(<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo separator="true">,</mo><mi>θ</mi><mo separator="true">,</mo><mi>κ</mi></mrow><annotation encoding="application/x-tex">x,y,\theta,\kappa</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">κ</span></span></span></span>),一般使用三次螺旋曲线</li>
+</ul>
+</li>
+<li>解决BVP问题,使用五次多项式拟合,获得</li>
+<li>计算每条路径的cost值</li>
+<li>选择最优路径</li>
+</ol>
+<img src="https://raw.githubusercontent.com/1lonely6legend/image-hosting/main/202403272057541.png" alt="image-20240327205750533" style="zoom:33%;" />
+<h3 id="lattice-常用的cost">lattice 常用的cost</h3>
+<ul>
+<li>safety
+<ul>
+<li><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>J</mi><mrow><mi>s</mi><mi>a</mi><mi>f</mi><mi>e</mi><mi>t</mi><mi>y</mi></mrow></msub><mo>=</mo><mi>c</mi><mi>o</mi><mi>l</mi><mi>l</mi><mi>i</mi><mi>s</mi><mi>i</mi><mi>o</mi><msub><mi>n</mi><mi>c</mi></msub><mi>h</mi><mi>e</mi><mi>c</mi><mi>k</mi><mo>(</mo><mo>)</mo></mrow><annotation encoding="application/x-tex">J_{safety}=collision_check()</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.969438em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.09618em;">J</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.09618em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">s</span><span class="mord mathdefault mtight">a</span><span class="mord mathdefault mtight" style="margin-right:0.10764em;">f</span><span class="mord mathdefault mtight">e</span><span class="mord mathdefault mtight">t</span><span class="mord mathdefault mtight" style="margin-right:0.03588em;">y</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">c</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">i</span><span class="mord mathdefault">s</span><span class="mord mathdefault">i</span><span class="mord mathdefault">o</span><span class="mord"><span class="mord mathdefault">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">c</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord mathdefault">h</span><span class="mord mathdefault">e</span><span class="mord mathdefault">c</span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="mopen">(</span><span class="mclose">)</span></span></span></span></li>
+</ul>
+</li>
+<li>smoothness
+<ul>
+<li><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>J</mi><mrow><mi>s</mi><mi>m</mi><mi>o</mi><mi>o</mi><mi>t</mi><mi>h</mi></mrow></msub><mo>=</mo><msubsup><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>N</mi></msubsup><msubsup><mi>l</mi><mi>i</mi><mrow><mo mathvariant="normal">′</mo><mo mathvariant="normal">′</mo><mo mathvariant="normal">′</mo><mn>2</mn></mrow></msubsup></mrow><annotation encoding="application/x-tex">J_{smooth}=\sum_{i=1}^N{l_i&#x27;&#x27;&#x27;^2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.09618em;">J</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.09618em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">s</span><span class="mord mathdefault mtight">m</span><span class="mord mathdefault mtight">o</span><span class="mord mathdefault mtight">o</span><span class="mord mathdefault mtight">t</span><span class="mord mathdefault mtight">h</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.2809409999999999em;vertical-align:-0.29971000000000003em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.981231em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.10903em;">N</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.29971000000000003em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord"><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-2.441336em;margin-left:-0.01968em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span><span class="mord mtight">′</span><span class="mord mtight">′</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.258664em;"><span></span></span></span></span></span></span></span></span></span></span></li>
+</ul>
+</li>
+<li>centerline attraction
+<ul>
+<li><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>j</mi><mrow><mi>r</mi><mi>e</mi><mi>f</mi></mrow></msub><mo>=</mo><msubsup><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>N</mi></msubsup><msubsup><mi>l</mi><mi>i</mi><mn>2</mn></msubsup></mrow><annotation encoding="application/x-tex">j_{ref}=\sum_{i=1}^Nl_i^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9456279999999999em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05724em;">j</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.05724em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">r</span><span class="mord mathdefault mtight">e</span><span class="mord mathdefault mtight" style="margin-right:0.10764em;">f</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.2809409999999999em;vertical-align:-0.29971000000000003em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.981231em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.10903em;">N</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.29971000000000003em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-2.441336em;margin-left:-0.01968em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.258664em;"><span></span></span></span></span></span></span></span></span></span></li>
+</ul>
+</li>
+</ul>
+<p>final: <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>J</mi><mrow><mi>t</mi><mi>o</mi><mi>t</mi><mi>a</mi><mi>l</mi></mrow></msub><mo>=</mo><msub><mi>w</mi><mn>1</mn></msub><mo>∗</mo><msub><mi>j</mi><mrow><mi>s</mi><mi>a</mi><mi>f</mi><mi>e</mi><mi>t</mi><mi>y</mi></mrow></msub><mo>+</mo><msub><mi>w</mi><mn>2</mn></msub><mo>∗</mo><msub><mi>J</mi><mrow><mi>s</mi><mi>m</mi><mi>o</mi><mi>o</mi><mi>t</mi><mi>h</mi></mrow></msub><mo>+</mo><msub><mi>w</mi><mn>3</mn></msub><mo>∗</mo><msub><mi>J</mi><mrow><mi>r</mi><mi>e</mi><mi>f</mi></mrow></msub></mrow><annotation encoding="application/x-tex">J_{total}=w_1*j_{safety}+w_2*J_{smooth}+w_3*J_{ref}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.09618em;">J</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.09618em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">t</span><span class="mord mathdefault mtight">o</span><span class="mord mathdefault mtight">t</span><span class="mord mathdefault mtight">a</span><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.61528em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.02691em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.9456279999999999em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.05724em;">j</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.05724em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">s</span><span class="mord mathdefault mtight">a</span><span class="mord mathdefault mtight" style="margin-right:0.10764em;">f</span><span class="mord mathdefault mtight">e</span><span class="mord mathdefault mtight">t</span><span class="mord mathdefault mtight" style="margin-right:0.03588em;">y</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.61528em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.02691em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.09618em;">J</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.09618em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">s</span><span class="mord mathdefault mtight">m</span><span class="mord mathdefault mtight">o</span><span class="mord mathdefault mtight">o</span><span class="mord mathdefault mtight">t</span><span class="mord mathdefault mtight">h</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.61528em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.02691em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.969438em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.09618em;">J</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.09618em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">r</span><span class="mord mathdefault mtight">e</span><span class="mord mathdefault mtight" style="margin-right:0.10764em;">f</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span></p>
+<h2 id="正向运动学和逆向运动学方法的对比">正向运动学和逆向运动学方法的对比</h2>
+<blockquote>
+<p>正向运动学采样:在控制空间进行采样,给定控制量,进行正向推断</p>
+<p>逆向运动学采样:在状态空间进行采样,给定初始状态和末状态,推断中间状态</p>
+</blockquote>
+<img src="https://raw.githubusercontent.com/1lonely6legend/image-hosting/main/202403272108994.png" alt="image-20240327210744195" style="zoom:33%;" />
+<h3 id="正向运动学采样-泊车">正向运动学采样-泊车</h3>
+<ul>
+<li>优点:<strong>易于计算</strong>,给定初始状态量和控制量,整个轨迹都可以根据运动学模型推断出来</li>
+<li>缺点:<strong>缺少对于终点的指引</strong>,依赖启发式函数来确定搜索的方向</li>
+<li>对环境的探索能力更强</li>
+</ul>
+<h3 id="逆向运动学采样-结构化道路">逆向运动学采样-结构化道路</h3>
+<ul>
+<li>优点:强引导性,直接对目标位置进行采样</li>
+<li>缺点:难以计算,需要计算一个BVP问题</li>
+<li>采样的规则需要小心设定(例如遇到障碍物,采样的范围等)</li>
+</ul>
+<h1 id="optimizer-base">optimizer base</h1>
+<h2 id="数值优化基础">数值优化基础</h2>
+<h3 id="优化问题描述">优化问题描述</h3>
+<img src="https://raw.githubusercontent.com/1lonely6legend/image-hosting/main/2024/03/28/20240328123759.png" alt="image-20240328123758079" style="zoom:33%;" />
+<ul>
+<li>
+<p>目的：为了最小化一个函数，称为object/cost function</p>
+</li>
+<li>
+<p>X为一个优化变量/向量，多个变量</p>
+</li>
+<li>
+<p>s为x的取值范围，称为一个feasible region，一般会对约束进行拆分</p>
+<ul>
+<li>等式约束</li>
+<li>不等式约束</li>
+</ul>
+</li>
+</ul>
+<h3 id="局部最优和全局最优">局部最优和全局最优：</h3>
+<img src="https://raw.githubusercontent.com/1lonely6legend/image-hosting/main/2024/03/28/20240328125217.png" alt="image-20240328125216708" style="zoom:33%;" />
+<ul>
+<li>强局部最优，必须要小于周围值</li>
+<li>弱局部最优，小于等于局部值</li>
+</ul>
+<h3 id="无约束优化关键是如何选择迭代下降方向">无约束优化（关键是如何选择迭代下降方向）</h3>
+<blockquote>
+<p>对于无约束问题,我们最小化函数只取决于优化变量,并且优化变量无限制</p>
+<p>对于一个无约束问题:解是局部最优解的一个必要条件为,当前解的梯度为0</p>
+</blockquote>
+<p>常见的无约束问题求解方法:</p>
+<blockquote>
+<p><strong>梯度下降-1阶</strong>雅可比矩阵：下降方向为梯度反方向， 下降步长由线性搜索确定</p>
+<p>​	在远离极小值的位置下降跟快，在极小值附近下降很慢</p>
+<p><strong>高斯法-2阶</strong>黑塞矩阵： 下降方向由逼近的二次函数确定，下降步长由线性搜索确定/或者直接使用二次函数最小值。实际上是对目标函数F二次偏导的迭代</p>
+<p>​	高司法在二阶导数的意义下，从函数凸性考虑，相当于不仅考虑坡度，还会考虑坡度的变化量</p>
+<p><strong>高斯牛顿法-1阶</strong>使用两个雅可比矩阵来近似黑塞矩阵：将原问题考虑为最小二乘法之后，也采用一阶导。</p>
+<p>​	高斯牛顿为分解目标函数F为f*f后，对f的一次偏导的迭代。</p>
+<p>​	其利用了目标函数的泰勒展开式把非线性函数的最小二乘化问题化为每次迭代的线性函数的最小二乘化问题。</p>
+<p>​	缺点就是若初始点距离极小值点过远，迭代步长过大会导致迭代下一代的函数值不一定小于上一代的函数值。</p>
+<p>Levenberg-Marquart:</p>
+<p>​	当μ大时相当于梯度下降法，μ小时相当于高斯牛顿法。</p>
+<p>​	设置一个比较小的μ值，当发现目标函数反而增大时，将μ增大使用梯度下降法快速寻找，然后再将μ减小使用牛顿法进行寻找。</p>
+</blockquote>
+<ul>
+<li>
+<h4 id="梯度下降法1阶-是指只用到了梯度">梯度下降法(1阶-是指只用到了梯度)</h4>
+<ul>
+<li>
+<img src="https://raw.githubusercontent.com/1lonely6legend/image-hosting/main/2024/03/28/20240328131711.png" alt="image-20240328131709740" style="zoom:33%;" />
+</li>
+<li>
+<img src="https://raw.githubusercontent.com/1lonely6legend/image-hosting/main/2024/03/28/20240328130133.png" alt="image-20240328130132163" style="zoom:33%;" />
+</li>
+<li>在每一迭代中,第k+1次迭代值为上一步向梯度反方向增加固定值<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mi>x</mi><mrow><mi>k</mi><mo>+</mo><mn>1</mn></mrow></msup><mo>=</mo><msup><mi>x</mi><mi>k</mi></msup><mo>+</mo><msup><mi>α</mi><mi>k</mi></msup><mo>⋅</mo><mi mathvariant="normal">Δ</mi><msup><mi>x</mi><mi>k</mi></msup></mrow><annotation encoding="application/x-tex">x^{k+1}=x^k+\alpha^k\cdot\Delta x^k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8491079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8491079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.932438em;vertical-align:-0.08333em;"></span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.849108em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.849108em;vertical-align:0em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.0037em;">α</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.849108em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.849108em;vertical-align:0em;"></span><span class="mord">Δ</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.849108em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span></span></span></span></span></span></span></span>,</li>
+<li>梯度下降法的收敛条件，工程上，可能要求多个条件都满足时，停止优化
+<ul>
+<li>相邻两次下降优化变量x差值很小</li>
+<li>相邻两次优化变量差值与上次优化变量的比值很小</li>
+<li>相邻两次cost函数值差距很小，cost几乎不下降了</li>
+</ul>
+</li>
+<li><strong>线性搜索确定每一次的下降步长</strong>
+<ul>
+<li><img src="https://raw.githubusercontent.com/1lonely6legend/image-hosting/main/2024/03/28/20240328130652.png" alt="image-20240328130650429" style="zoom:33%;" />（P_k代表当前找到的搜索方向）</li>
+<li>精确线性搜索，不常用
+<ul>
+<li>在下降方向上（一个切面上），找到cost最小值，不一定是全局最优解，只是这个下降方向就不一定对</li>
+</ul>
+</li>
+<li>非精确的线性搜索，常用
+<ul>
+<li>不要求找到最小的cost点，见上面的图，只要在这个方向上，cost下降到一定水平，就可以</li>
+</ul>
+</li>
+<li>回溯的线性搜索
+<ul>
+<li><img src="https://raw.githubusercontent.com/1lonely6legend/image-hosting/main/2024/03/28/20240328131018.png" alt="image-20240328131017478" style="zoom:25%;" />（纵轴为cost值，这个图和上面的一样含义，只是换了个标志）</li>
+<li>在当前位置找切线，只要当前确定的步长在上图的两个虚线之间，都是可以的</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<h4 id="牛顿法2阶使用二次函数逼近原函数">牛顿法(2阶)使用二次函数逼近原函数</h4>
+<ul>
+<li><img src="https://raw.githubusercontent.com/1lonely6legend/image-hosting/main/2024/03/28/20240328131840.png" alt="image-20240328131838703" style="zoom:33%;" /><img src="https://raw.githubusercontent.com/1lonely6legend/image-hosting/main/2024/03/28/20240328132321.png" alt="image-20240328132319190" style="zoom: 33%;" /></li>
+<li>当前点做一个二阶泰勒展开，提取相邻曲线的信息</li>
+<li>通过泰勒展开，利用逼近的二次函数下降方向，作为原函数的下降方向，</li>
+<li>下降方向<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>δ</mi><mo>=</mo><mo>−</mo><msup><mi>H</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>⋅</mo><mi mathvariant="normal">∇</mi><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\delta=-H^{-1}\cdot\nabla f(x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.03785em;">δ</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.897438em;vertical-align:-0.08333em;"></span><span class="mord">−</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.08125em;">H</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∇</span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mclose">)</span></span></span></span>,下降方式为-黑塞矩阵逆乘以梯度</li>
+</ul>
+</li>
+<li>
+<h4 id="高斯牛顿法2阶面向最小二乘的类型很多函数的平方和的最小值">高斯牛顿法(2阶)，面向最小二乘的类型，很多函数的平方和的最小值</h4>
+<ul>
+<li>
+<img src="https://raw.githubusercontent.com/1lonely6legend/image-hosting/main/2024/03/28/20240328132718.png" alt="image-20240328132716900" style="zoom:33%;" />
+</li>
+<li></li>
+</ul>
+</li>
+<li>
+<h4 id="levenberg-marquardt列文伯格-马夸尔特-lm算法">levenberg-Marquardt（列文伯格-马夸尔特）-LM算法</h4>
+<ul>
+<li>当μ大时相当于梯度下降法，μ小时相当于高斯牛顿法。</li>
+<li>设置一个比较小的μ值，当发现目标函数反而增大时，将μ增大使用梯度下降法快速寻找，然后再将μ减小使用牛顿法进行寻找。</li>
+</ul>
+</li>
+</ul>
+<h3 id="二次规划">二次规划</h3>
+<p>凸优化问题的描述：</p>
+<img src="https://raw.githubusercontent.com/1lonely6legend/image-hosting/main/2024/03/28/20240328142908.png" alt="image-20240328142907074" style="zoom:33%;" />
+<p>对于一个优化函数，本事是凸函数，并且不等式函数约束也为凸函数，还有线性的等式约束，这就可以成为一个凸优化问题。</p>
+<img src="https://raw.githubusercontent.com/1lonely6legend/image-hosting/main/2024/03/28/20240328143250.png" alt="image-20240328143248183" style="zoom:33%;" />
+<h4 id="二次规划qp定义">二次规划QP定义：</h4>
+<img src="https://raw.githubusercontent.com/1lonely6legend/image-hosting/main/2024/03/28/20240328143339.png" alt="image-20240328143338426" style="zoom:33%;" />
+<ul>
+<li>cost function转为一个二次型表示]</li>
+<li>所有的约束都要是线性的（包含等式和不等式约束）</li>
+</ul>
+<blockquote>
+<p>osqp求解器中，没有单独的等式约束，等式表示为a≤x≤a</p>
+<img src="https://raw.githubusercontent.com/1lonely6legend/image-hosting/main/2024/03/28/20240328143815.png" alt="image-20240328143814018" style="zoom:33%;" />
+<p>在osqp求解的矩阵输入中，稀疏矩阵P A需要表示为csc矩阵，压缩空间</p>
+<p><a href="https://zhuanlan.zhihu.com/p/557231877">高性能稀疏矩阵乘法（coo，csr，csc）</a></p>
+</blockquote>
+<h3 id="非凸优化问题">非凸优化问题</h3>
+<img src="https://raw.githubusercontent.com/1lonely6legend/image-hosting/main/2024/03/28/20240328144141.png" alt="image-20240328144140260" style="zoom:33%;" />
+<p>常用的求解方式：</p>
+<ul>
+<li>SQP 拆解为多个QP问题</li>
+<li>IPM 内点可行域迭代</li>
+</ul>
+<blockquote>
+<p>常用的非线性求解器Ipopt，使用内点法来求解</p>
+</blockquote>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[构造函数列表初始化与赋值]]></title>
+        <id>https://blog.ogier-maxwell.top/post/gou-zao-han-shu-lie-biao-chu-shi-hua-yu-fu-zhi/</id>
+        <link href="https://blog.ogier-maxwell.top/post/gou-zao-han-shu-lie-biao-chu-shi-hua-yu-fu-zhi/">
+        </link>
+        <updated>2023-10-10T04:11:17.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="构造函数列表初始化与赋值的区别">构造函数列表初始化与赋值的区别</h1>
+<h2 id="构造函数初始化的两种类型">构造函数初始化的两种类型</h2>
+<ul>
+<li>手动给成员赋值</li>
+<li>使用初始化列表</li>
+</ul>
+<hr>
+<h2 id="使用初始化列表的构造函数">使用初始化列表的构造函数</h2>
+<blockquote>
+<p>类名::构造函数名(参数表): (成员初始化表){构造函数体}</p>
+</blockquote>
+<p>构造函数中的初始化列表只需要在参数列表的后面加一个冒号（:），然后*<em>将要初始化的成员按照*<code>成员名(参数)</code><em>的格式排列在后面，个成员之间用逗号隔开</em></em></p>
+<pre><code class="language-cpp">class Test{
+	public:
+		int A;
+		int B;
+		Test(int a);
+};
+
+Test::Test(int a):A(a),B(10) 
+//给成员变量 A、B 初始化，不一定要和参数列表写在一行
+{ /* …… */ }
+</code></pre>
+<p>其中成员的初始化顺序不是按照初始化列表中的顺序来的，而是<strong>按照成员声明的顺序</strong>来的，例如：</p>
+<pre><code class="language-cpp">/* Test类的声明同上 */
+Test::Test(int a):B(10),A(a) 
+// 虽然 B 在前面，但还是 A 先初始化
+{/* …… */}
+
+Test::Test(int a):B(a),A(B) //是错误的
+//此处 A 的初始化依赖了 B，然而是 A 先初始化，这就导致 A 得到了 B 中还没初始化的错误内容
+{/* …… */}
+</code></pre>
+<h2 id="若类的数据成员是静态的const或者引用类型必须使用初始化列表">若类的数据成员是静态的const或者引用类型，必须使用初始化列表</h2>
+<h3 id="const和static的区别">const和static的区别</h3>
+<p>static：修饰的变量为静态变量，只会被初始化一次，该变量存储在内存中的静态区，地址不会改变。修饰全局变量时，每个函数对其的调用都是调用其生成的副本，修饰局部变量时每次调用都是上一次调用后的值。</p>
+<p>const：修饰的变量只会被定义（可能也只能在定义的时候赋值）一次，定义之后无法对其进行赋值或修改（即不能充当左值）。</p>
+<p><strong>static和const修饰量的最大区别就是：static的值能修改，const不能（const修饰指针的情况另分）</strong></p>
+<blockquote>
+<p>const是静态局部变量，在超出其作用域后会被立即释放,在类的具体对象中，<strong>不同的类可以有不同的const变量</strong></p>
+<p>static是静态整体变量，在函数执行完毕后不会释放其空间，<strong>static变量是和类绑定的</strong>不同的对象的static变量是一样的</p>
+</blockquote>
+<hr>
+<ul>
+<li>
+<p>静态(const)的数据成员只能初始化而不能赋值，同样引用类型也是只可以被初始化，那么只有用初始化列表。</p>
+</li>
+<li>
+<p>因为<strong>静态数据成员必须在定义时就被赋值</strong>，在构造函数体内进行赋值时，编译会报错。</p>
+</li>
+<li>
+<p><strong>静态数据成员在类声明中声明，在包含类方法的文件中初始化。初始化时使用作用域运算符来指出静态成员所属的类。但如果静态成员是整形const或枚举型const，则可以在类声明中初始化。</strong></p>
+</li>
+<li>
+<p>static类型的静态变量好像不能使用列表初始化的方式进行初始化</p>
+</li>
+<li>
+<p><a href="https://blog.csdn.net/tobefxz/article/details/14109697">C++ static、const和static const类型成员变量声明以及初始化</a></p>
+</li>
+<li>
+<p><a href="https://blog.csdn.net/weixin_41469381/article/details/88855872">如何初始化const和static数据成员</a></p>
+</li>
+<li>
+<p><a href="https://zhuanlan.zhihu.com/p/141113043">一文带你了解static 和const</a></p>
+</li>
+</ul>
+<pre><code class="language-cpp">#include &lt;iostream&gt;  
+#include &lt;string&gt;  
+using namespace std;  
+  
+template&lt;class t&gt;  
+class namedptr {  
+public:  
+    namedptr(const string&amp; initname, t *initptr);  
+private:  
+    const string name; //静态数据成员的初始化必需用初始化列表  
+    t * const ptr;  
+};  
+  
+  
+  
+template&lt;class t&gt;  
+namedptr&lt;t&gt;::namedptr(const string&amp; initname, t *initptr)
+  : name(initname), ptr(initptr)  {}  
+  
+//第二种方法是在构造函数体内赋值：  
+//但含有静态数据类型，所以不可用
+  
+//template&lt;class t&gt;  
+//namedptr&lt;t&gt;::namedptr(const string&amp; initname, t *initptr)  
+//{  
+//  name = initname;  
+//  ptr = initptr;  
+//}  
+  
+  
+int main()  
+{  
+    int a  = 10;  
+    namedptr&lt;int&gt; Test(&quot;SHENZHEN&quot;,&amp;a);  
+}  
+</code></pre>
+<h2 id="两种初始化方式的对比">两种初始化方式的对比</h2>
+<blockquote>
+<p>首先 <em><strong>构造函数体内进行赋值会带来额外的开销，效率会低于初始化列表的方式</strong></em></p>
+</blockquote>
+<pre><code class="language-cpp">#ifdef A_H_
+#define A_H_
+#include &lt;iostream&gt;
+usingnamespace std;
+class A{
+public:
+	A(int a);
+	static void print();//静态成员函数
+private:
+	static int aa;//静态数据成员的声明
+	static const int count;//常量静态数据成员（可以在构造函数中初始化）
+	const int bb;//常量数据成员
+};
+ 
+int A::aa=0;//静态成员的定义+初始化
+const int A::count=25;//静态常量成员定义+初始化
+ 
+A::A(int a):bb(a){//常量成员的初始化
+aa+=1;
+}
+ 
+void A::print(){
+cout&lt;&lt;&quot;count=&quot;&lt;&lt;count&lt;&lt;endl;
+cout&lt;&lt;&quot;aa=&quot;&lt;&lt;aa&lt;&lt;endl;
+}
+ 
+#endif
+ 
+void main(){
+	A a(10);
+	A::print();//通过类访问静态成员函数
+	a.print();//通过对象访问静态成员函数
+}
+</code></pre>
+<p>在上面的例子中</p>
+<ul>
+<li>第一种使用了<strong>初始化列表</strong>的方式。 只是调用了一次缺省的构造函数，并不会调用赋值函数。会减少不必要的开支，当类相当复杂时，就会看出使用初始化列表的好处。</li>
+<li>第二种使用了<strong>构造函数体内赋值</strong>的方式。初始化数据成员时会两次对string的成员函数的调用：一次是缺省构造函数，另一次是赋值。</li>
+</ul>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[lambda匿名函数]]></title>
+        <id>https://blog.ogier-maxwell.top/post/lambda-ni-ming-han-shu/</id>
+        <link href="https://blog.ogier-maxwell.top/post/lambda-ni-ming-han-shu/">
+        </link>
+        <updated>2023-05-15T04:06:11.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="c11-lambda匿名函数用法详解">C++11 lambda匿名函数用法详解</h1>
+<p>lambda 源自希腊字母表中第 11 位的 λ，在计算机科学领域，它则是被用来表示一种匿名函数。所谓匿名函数，简单地理解就是没有名称的函数，又常被称为 lambda 函数或者 lambda 表达式。</p>
+<p>继 Python、Java、C#、PHP 等众多高级编程语言都支持 lambda 匿名函数后，C++11 标准终于引入了 lambda，本节将带领大家系统地学习 lambda 表达式的具体用法。</p>
+<h2 id="lambda匿名函数的定义">lambda匿名函数的定义</h2>
+<p>定义一个 lambda 匿名函数很简单，可以套用如下的语法格式：</p>
+<p>[外部变量访问方式说明符] (参数) mutable noexcept/throw() -&gt; 返回值类型<br>
+{<br>
+函数体;<br>
+};</p>
+<p>其中各部分的含义分别为：</p>
+<h4 id="1-外部变量方位方式说明符">\1) [外部变量方位方式说明符]</h4>
+<p>[ ] 方括号用于向编译器表明当前是一个 lambda 表达式，其不能被省略。在方括号内部，可以注明当前 lambda 函数的函数体中可以使用哪些“外部变量”。</p>
+<blockquote>
+<p>所谓外部变量，指的是和当前 lambda 表达式位于同一作用域内的所有局部变量。</p>
+</blockquote>
+<h4 id="2-参数">\2) (参数)</h4>
+<p>和普通函数的定义一样，lambda 匿名函数也可以接收外部传递的多个参数。和普通函数不同的是，如果不需要传递参数，可以连同 () 小括号一起省略；</p>
+<h4 id="3-mutable">\3) mutable</h4>
+<p>此关键字可以省略，如果使用则之前的 () 小括号将不能省略（参数个数可以为 0）。默认情况下，对于以值传递方式引入的外部变量，不允许在 lambda 表达式内部修改它们的值（可以理解为这部分变量都是 const 常量）。而如果想修改它们，就必须使用 mutable 关键字。</p>
+<p>注意，对于以值传递方式引入的外部变量，lambda 表达式修改的是拷贝的那一份，并不会修改真正的外部变量；</p>
+<h4 id="4-noexceptthrow">\4) noexcept/throw()</h4>
+<p>可以省略，如果使用，在之前的 () 小括号将不能省略（参数个数可以为 0）。默认情况下，lambda 函数的函数体中可以抛出任何类型的异常。</p>
+<p>而标注 <strong>noexcept 关键字，则表示函数体内不会抛出任何异常</strong>；<strong>使用 throw() 可以指定 lambda 函数内部可以抛出的异常类型</strong>。</p>
+<p>值得一提的是，如果 lambda 函数标有 noexcept 而函数体内抛出了异常，又或者使用 throw() 限定了异常类型而函数体内抛出了非指定类型的异常，这些异常无法使用 try-catch 捕获，会导致程序执行失败（本节后续会给出实例）。</p>
+<h4 id="5-返回值类型">\5) -&gt; 返回值类型</h4>
+<p>指明 lambda 匿名函数的返回值类型。值得一提的是，如果 lambda 函数体内只有一个 return 语句，或者该函数返回 void，则编译器可以自行推断出返回值类型，此情况下可以直接省略<code>-&gt; 返回值类型</code>。</p>
+<h4 id="6-函数体">\6) 函数体</h4>
+<p>和普通函数一样，lambda 匿名函数包含的内部代码都放置在函数体中。该函数体内除了可以使用指定传递进来的参数之外，还可以使用指定的外部变量以及全局范围内的所有全局变量。</p>
+<p>需要注意的是，外部变量会受到以值传递还是以引用传递方式引入的影响，而全局变量则不会。换句话说，在 lambda 表达式内可以使用任意一个全局变量，必要时还可以直接修改它们的值。</p>
+<blockquote>
+<p>其中，红色标识的参数是定义 lambda 表达式时必须写的，而绿色标识的参数可以省略。</p>
+</blockquote>
+<p>比如，如下就定义了一个最简单的 lambda 匿名函数：</p>
+<p>[]{}</p>
+<p>显然，此 lambda 匿名函数未引入任何外部变量（[] 内为空），也没有传递任何参数，没有指定 mutable、noexcept 等关键字，没有返回值和函数体。所以，这是一个没有任何功能的 lambda 匿名函数。</p>
+<h4 id="lambda匿名函数中的外部变量">lambda匿名函数中的[外部变量]</h4>
+<p>对于 lambda 匿名函数的使用，令多数初学者感到困惑的就是 [外部变量] 的使用。其实很简单，无非表 1 所示的这几种编写格式。</p>
+<table>
+<thead>
+<tr>
+<th>外部变量格式</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[]</td>
+<td>空方括号表示当前 lambda 匿名函数中不导入任何外部变量。</td>
+</tr>
+<tr>
+<td>[=]</td>
+<td>只有一个 = 等号，表示以值传递的方式导入所有外部变量；</td>
+</tr>
+<tr>
+<td>[&amp;]</td>
+<td>只有一个 &amp; 符号，表示以引用传递的方式导入所有外部变量；</td>
+</tr>
+<tr>
+<td>[val1,val2,...]</td>
+<td>表示以值传递的方式导入 val1、val2 等指定的外部变量，同时多个变量之间没有先后次序；</td>
+</tr>
+<tr>
+<td>[&amp;val1,&amp;val2,...]</td>
+<td>表示以引用传递的方式导入 val1、val2等指定的外部变量，多个变量之间没有前后次序；</td>
+</tr>
+<tr>
+<td>[val,&amp;val2,...]</td>
+<td>以上 2 种方式还可以混合使用，变量之间没有前后次序。</td>
+</tr>
+<tr>
+<td>[=,&amp;val1,...]</td>
+<td>表示除 val1 以引用传递的方式导入外，其它外部变量都以值传递的方式导入。</td>
+</tr>
+<tr>
+<td>[this]</td>
+<td>表示以值传递的方式导入当前的 this 指针。</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>注意，单个外部变量不允许以相同的传递方式导入多次。例如 [=，val1] 中，val1 先后被以值传递的方式导入了 2 次，这是非法的。</p>
+</blockquote>
+<h3 id="例-1lambda-匿名函数的定义和使用">【例 1】lambda 匿名函数的定义和使用。</h3>
+<blockquote>
+<p>这里使用了stl中srot函数的自定义排序功能</p>
+</blockquote>
+<pre><code class="language-c++">#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+int main(){    
+  int num[4] = {4, 2, 3, 1};    
+  //对 a 数组中的元素进行排序    
+  sort(num, num+4, [=](int x, int y) -&gt; bool{ return x &lt; y; } );    
+  for(int n : num){        
+    cout &lt;&lt; n &lt;&lt; &quot; &quot;;    
+  }    
+  return 0;
+=}
+</code></pre>
+<p>程序执行结果为：</p>
+<p>1 2 3 4</p>
+<p>程序第 9 行通过调用 sort() 函数实现了对 num 数组中元素的升序排序，其中就用到了 lambda 匿名函数。而如果使用普通函数，需以如下代码实现：</p>
+<pre><code class="language-c++">#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+//自定义的升序排序规则bool 
+sort_up(int x,int y){
+	return  x &lt; y;
+}
+
+int main(){    
+int num[4] = {4, 2, 3, 1};    
+//对 a 数组中的元素进行排序    
+	sort(num, num+4, sort_up);    
+	for(int n : num){        
+		cout &lt;&lt; n &lt;&lt; &quot; &quot;;    
+	}    
+	return 0;
+}
+
+</code></pre>
+<p>此程序中 sort_up() 函数的功能和上一个程序中的 lambda 匿名函数完全相同。显然在类似的场景中，使用 lambda 匿名函数更有优势。</p>
+<p>除此之外，虽然 lambda 匿名函数没有函数名称，但我们仍可以为其手动设置一个名称，比如：</p>
+<pre><code class="language-c++">#include &lt;iostream&gt;
+using namespace std;
+int main(){    
+  //display 即为 lambda 匿名函数的函数名    
+  auto display = [](int a,int b) -&gt; void{cout &lt;&lt; a &lt;&lt; &quot; &quot; &lt;&lt; b;};    
+  //调用 lambda 函数    
+  display(10,20);    
+  return 0;
+}
+</code></pre>
+<p>程序执行结果为：</p>
+<p>10 20</p>
+<p>可以看到，程序中使用 auto 关键字为 lambda 匿名函数设定了一个函数名，由此我们即可在作用域内调用该函数。</p>
+<h3 id="例-2值传递和引用传递的区别">【例 2】值传递和引用传递的区别</h3>
+<pre><code class="language-c++">#include &lt;iostream&gt;
+using namespace std;
+//全局变量
+int all_num = 0;
+int main(){    
+  //局部变量    
+  int num_1 = 1;    
+  int num_2 = 2;    
+  int num_3 = 3;    
+  
+  //按值传递
+  cout &lt;&lt; &quot;lambda1:\n&quot;;      
+  auto lambda1 = [=]{       
+  //全局变量可以访问甚至修改        
+    all_num = 10;        
+    //函数体内只能使用外部变量，而无法对它们进行修改        
+    cout &lt;&lt; num_1 &lt;&lt; &quot; &quot;&lt;&lt; num_2 &lt;&lt; &quot; &quot;&lt;&lt; num_3 &lt;&lt; endl;    
+  };    
+  lambda1();    
+  cout &lt;&lt; all_num &lt;&lt;endl;    
+  
+  //引用传递
+  cout &lt;&lt; &quot;lambda2:\n&quot;;   
+  auto lambda2 = [&amp;]{        
+    all_num = 100;        
+    num_1 = 10;        
+    num_2 = 20;        
+    num_3 = 30;        
+    cout &lt;&lt; num_1 &lt;&lt; &quot; &quot;&lt;&lt; num_2 &lt;&lt; &quot; &quot;&lt;&lt; num_3 &lt;&lt; endl;    
+  };    
+  lambda2();    
+  cout &lt;&lt; all_num &lt;&lt; endl;   
+  
+  
+  return 0;
+}
+</code></pre>
+<p>程序执行结果为：</p>
+<p>lambda1:<br>
+1 2 3<br>
+10<br>
+lambda2:<br>
+10 20 30<br>
+100</p>
+<p>可以看到，在创建 lambda1 和 lambda2 匿名函数的作用域中，有 num_1、num_2 和 num_3 这 3 个局部变量，另外还有 all_num 全局变量。</p>
+<p>其中，lambda1 <strong>匿名函数是以 [=] 值传递的方式导入的局部变量，这意味着默认情况下，此函数内部无法修改这 3 个局部变量的值，但全局变量 all_num 除外</strong>。</p>
+<p>相对地，lambda2 匿名函数**以 [&amp;] 引用传递的方式导入这 3 个局部变量，因此在该函数的内部不就可以访问这 3 个局部变量，还可以任意修改它们。**同样，也可以访问甚至修改全局变量。</p>
+<blockquote>
+<p>感兴趣的读者，可自行尝试在 lambda1 匿名函数中修改 num_1、num_2 或者 num_3 的值，观察编译器的报错信息。</p>
+</blockquote>
+<p>当然，如果我们想在 lambda1 匿名函数的基础上修改外部变量的值，可以借助 mutable 关键字，例如：</p>
+<pre><code class="language-c++">auto lambda1 = [=]() mutable{
+  num_1 = 10;                                 
+  num_2 = 20;                               
+  num_3 = 30;                                 
+  //函数体内只能使用外部变量，而无法对它们进行修改                             
+  cout &lt;&lt; num_1 &lt;&lt; &quot; &quot;&lt;&lt; num_2 &lt;&lt; &quot; &quot;&lt;&lt; num_3 &lt;&lt; endl;
+};
+</code></pre>
+<p>由此，就可以在 lambda1 匿名函数中修改外部变量的值。但需要注意的是，这里<strong>修改的仅是 num_1、num_2、num_3 拷贝的那一份的值，真正<em>外部变量</em>的值并不会发生改变。</strong></p>
+<h3 id="例-3执行抛出异常类型">【例 3】执行抛出异常类型</h3>
+<pre><code class="language-c++">#include &lt;iostream&gt;
+using namespace std;
+int main(){    
+  auto except = []()throw(int) {throw 10;};    
+  try {except();}    
+  catch (int) {        
+    cout &lt;&lt; &quot;捕获到了整形异常&quot;;    
+  }    
+  return 0;
+}
+</code></pre>
+<p>程序执行结果为：</p>
+<p>捕获到了整形异常</p>
+<p>可以看到，except 匿名数组中指定函数体中可以抛出整形异常，因此当函数体中真正发生整形异常时，可以借助 try-catch 块成功捕获并处理。</p>
+<p>在此基础上，在看一下反例：</p>
+<pre><code class="language-c++">#include &lt;iostream&gt;
+using namespace std;
+int main(){    
+  auto except1 = []()noexcept{throw 100;};    
+  auto except2 = []()throw(char){throw 10;};    
+  try{except1();except2();}catch(int){        
+    cout &lt;&lt; &quot;捕获到了整形异常&quot;&lt;&lt; endl;    
+  }    
+  return 0;
+}
+</code></pre>
+<p>此程序运行会直接崩溃，原因很简单，except1 匿名函数指定了函数体中不发生任何异常，但函数体中却发生了整形异常；except2 匿名函数指定函数体可能会发生字符异常，但函数体中却发生了整形异常。由于指定异常类型和真正发生的异常类型不匹配，导致 try-catch 无法捕获，最终程序运行崩溃。</p>
+<blockquote>
+<p>如果不使用 noexcept 或者 throw()，则 lambda 匿名函数的函数体中允许发生任何类型的异常。</p>
+</blockquote>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[c++11函数封装与智能指针]]></title>
+        <id>https://blog.ogier-maxwell.top/post/c11-han-shu-feng-zhuang-yu-zhi-neng-zhi-zhen/</id>
+        <link href="https://blog.ogier-maxwell.top/post/c11-han-shu-feng-zhuang-yu-zhi-neng-zhi-zhen/">
+        </link>
+        <updated>2023-05-04T04:01:55.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="函数封装">函数封装</h2>
+<p><code>std::function&lt;void()&gt;</code>是C++中的一个类模板，它是函数封装器的一种实现方式。它可以包装任意可调用对象（函数、函数指针、成员函数指针、lambda表达式等），并提供一致的接口进行调用。</p>
+<p>具体来说：</p>
+<ul>
+<li><code>std::function</code>是C++11引入的一个函数封装器模板类，位于<code>&lt;functional&gt;</code>头文件中。</li>
+<li><code>&lt;void()&gt;</code>是一个函数签名，表示接受无参数并返回<code>void</code>的函数类型。</li>
+</ul>
+<p>因此，<code>std::function&lt;void()&gt;</code>表示一个可以接受无参数并返回<code>void</code>的可调用对象。你可以将符合这个函数签名的函数、函数指针、成员函数指针、lambda表达式等赋值给<code>std::function&lt;void()&gt;</code>对象，并通过该对象进行调用。</p>
+<p>以下是一个示例：</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;functional&gt;
+
+void PrintHello() {
+  std::cout &lt;&lt; &quot;Hello, World!&quot; &lt;&lt; std::endl;
+}
+
+int main() {
+  std::function&lt;void()&gt; func1 = PrintHello;
+  func1();  // 调用PrintHello函数
+
+  std::function&lt;void()&gt; func2 = []() {
+    std::cout &lt;&lt; &quot;Hello, Lambda!&quot; &lt;&lt; std::endl;
+  };
+  func2();  // 调用lambda表达式
+
+  return 0;
+}
+</code></pre>
+<p>在上述示例中，我们创建了两个<code>std::function&lt;void()&gt;</code>对象，分别存储了<code>PrintHello</code>函数和一个lambda表达式。通过调用这些对象，我们可以执行相应的函数或表达式并输出相应的结果。</p>
+<p><code>std::function&lt;void()&gt;</code>的灵活性和通用性使得它在C++中广泛应用于回调函数、事件处理等场景，提供了一种方便的封装和调用可调用对象的方式。</p>
+<h2 id="智能指针">智能指针</h2>
+<blockquote>
+<p>参考<a href="http://c.biancheng.net/view/7898.html">C++11 shared_ptr智能指针（超级详细） (biancheng.net)</a></p>
+</blockquote>
+<p>在实际的 C++ 开发中，我们经常会遇到诸如程序运行中突然崩溃、程序运行所用内存越来越多最终不得不重启等问题，这些问题往往都是内存资源管理不当造成的。比如：</p>
+<ul>
+<li>有些内存资源已经被释放，但指向它的指针并没有改变指向（成为了野指针），并且后续还在使用；</li>
+<li>有些内存资源已经被释放，后期又试图再释放一次（重复释放同一块内存会导致程序运行崩溃）；</li>
+<li>没有及时释放不再使用的内存资源，造成内存泄漏，程序占用的内存资源越来越多。</li>
+</ul>
+<p>针对以上这些情况，很多程序员认为 C++ 语言应该提供更友好的内存管理机制，这样就可以将精力集中于开发项目的各个功能上。</p>
+<p>事实上，显示内存管理的替代方案很早就有了，早在 1959 年前后，就有人提出了“垃圾自动回收”机制。所谓垃圾，指的是那些不再使用或者没有任何指针指向的内存空间，而“回收”则指的是将这些“垃圾”收集起来以便再次利用。</p>
+<p>如今，垃圾回收机制已经大行其道，得到了诸多编程语言的支持，例如 Java、Python、C#、PHP 等。而 C++ 虽然从来没有公开得支持过垃圾回收机制，但 C++98/03 标准中，支持使用 auto_ptr 智能指针来实现堆内存的自动回收；C++11 新标准在废弃 auto_ptr 的同时，增添了 unique_ptr、shared_ptr 以及 weak_ptr 这 3 个智能指针来实现堆内存的自动回收。</p>
+<p>所谓智能指针，可以从字面上理解为“智能”的指针。具体来讲，智能指针和普通指针的用法是相似的，不同之处在于，智能指针可以在适当时机自动释放分配的内存。也就是说，使用智能指针可以很好地避免“忘记释放内存而导致内存泄漏”问题出现。由此可见，C++ 也逐渐开始支持垃圾回收机制了，尽管目前支持程度还有限。</p>
+<blockquote>
+<p>C++ 智能指针底层是采用引用计数的方式实现的。简单的理解，智能指针在申请堆内存空间的同时，会为其配备一个整形值（初始值为 1），每当有新对象使用此堆内存时，该整形值 +1；反之，每当使用此堆内存的对象被释放时，该整形值减 1。当堆空间对应的整形值为 0 时，即表明不再有对象使用它，该堆空间就会被释放掉。</p>
+</blockquote>
+<p>接下来，我们将分别对 shared_ptr、unique_ptr 以及 weak_ptr 这 3 个智能指针的特性和用法做详细的讲解，本节先介绍 shared_ptr 智能指针。</p>
+<h2 id="c11-shared_ptr智能指针">C++11 shared_ptr智能指针</h2>
+<p>实际上，每种智能指针都是以类模板的方式实现的，shared_ptr 也不例外。shared_ptr<T>（其中 T 表示指针指向的具体数据类型）的定义位于<code>&lt;memory&gt;</code>头文件，并位于 std 命名空间中，因此在使用该类型指针时，程序中应包含如下 2 行代码：</p>
+<pre><code class="language-c++">#include &lt;memory&gt;
+using namespace std;
+</code></pre>
+<blockquote>
+<p>注意，第 2 行代码并不是必须的，也可以不添加，则后续在使用 shared_ptr 智能指针时，就需要明确指明<code>std::</code>。</p>
+</blockquote>
+<p>值得一提的是，和 unique_ptr、weak_ptr 不同之处在于，<strong>多个 shared_ptr 智能指针可以共同使用同一块堆内存</strong>。并且，由于该类型智能指针在实现上采用的是引用计数机制，即便有一个 shared_ptr 指针放弃了堆内存的“使用权”（引用计数减 1），也不会影响其他指向同一堆内存的 shared_ptr 指针（只有引用计数为 0 时，堆内存才会被自动释放）。</p>
+<h4 id="1-shared_ptr智能指针的创建">1、shared_ptr智能指针的创建</h4>
+<p>shared_ptr<T> 类模板中，提供了多种实用的构造函数，这里给读者列举了几个常用的构造函数（以构建指向 int 类型数据的智能指针为例）。</p>
+<p>\1) 通过如下 2 种方式，可以构造出 shared_ptr<T> 类型的空智能指针：</p>
+<pre><code class="language-c++">std::shared_ptr&lt;int&gt; p1;             //不传入任何实参
+std::shared_ptr&lt;int&gt; p2(nullptr);    //传入空指针 nullptr
+</code></pre>
+<p>注意，<strong>空的 shared_ptr 指针，其初始引用计数为 0</strong>，而不是 1。</p>
+<p>\2) 在构建 shared_ptr 智能指针，也可以明确其指向。例如：</p>
+<pre><code class="language-c++">std::shared_ptr&lt;int&gt; p3(new int(10));
+</code></pre>
+<blockquote>
+<p>由此，我们就成功构建了一个 shared_ptr 智能指针，其指向一块存有 10 这个 int 类型数据的堆内存空间。</p>
+</blockquote>
+<p>同时，C++11 标准中还<strong>提供了 std::make_shared<T> 模板函数，其可以用于初始化 shared_ptr 智能指针</strong>，例如：</p>
+<pre><code class="language-c++">std::shared_ptr&lt;int&gt; p3 = std::make_shared&lt;int&gt;(10);
+</code></pre>
+<p>以上 2 种方式创建的 p3 是完全相同。</p>
+<p>\3) 除此之外，shared_ptr<T> 模板还提供有相应的拷贝构造函数和移动构造函数，例如：</p>
+<pre><code class="language-c++">//调用拷贝构造函数
+std::shared_ptr&lt;int&gt; p4(p3);
+//或者 
+std::shared_ptr&lt;int&gt; p4 = p3;
+
+//调用移动构造函数
+std::shared_ptr&lt;int&gt; p5(std::move(p4)); 
+//或者 
+std::shared_ptr&lt;int&gt; p5 = std::move(p4);
+</code></pre>
+<blockquote>
+<p>有关拷贝构造函数，读者可阅读《<a href="http://c.biancheng.net/view/2334.html">C++拷贝构造函数</a>》一节做系统了解；有关移动构造函数，读者可阅读《<a href="http://c.biancheng.net/view/7847.html">C++移动构造函数</a>》做详细了解；有关 move() 函数的功能和用法，读者可阅读《<a href="http://c.biancheng.net/view/7863.html">C++11 move()</a>》一节。</p>
+</blockquote>
+<p>如上所示，p3 和 p4 都是 shared_ptr 类型的智能指针，因此可以用 p3 来初始化 p4，由于 p3 是左值，因此会调用拷贝构造函数。需要注意的是，如果 p3 为空智能指针，则 p4 也为空智能指针，其引用计数初始值为 0；反之，则表明 p4 和 p3 指向同一块堆内存，同时该堆空间的引用计数会加 1。</p>
+<p>而对于 std::move(p4) 来说，该函数会强制将 p4 转换成对应的右值，因此初始化 p5 调用的是移动构造函数。另外和调用拷贝构造函数不同，用 std::move(p4) 初始化 p5，会使得 p5 拥有了 p4 的堆内存，而 p4 则变成了空智能指针。</p>
+<p>注意，同一普通指针不能同时为多个 shared_ptr 对象赋值，否则会导致程序发生异常。例如：</p>
+<pre><code class="language-c++">int* ptr = new int;
+std::shared_ptr&lt;int&gt; p1(ptr);
+std::shared_ptr&lt;int&gt; p2(ptr);
+//错误
+</code></pre>
+<p>\4) 在初始化 shared_ptr 智能指针时，还可以自定义所指堆内存的释放规则，这样当堆内存的引用计数为 0 时，会优先调用我们自定义的释放规则。</p>
+<p>在某些场景中，自定义释放规则是很有必要的。比如，对于申请的动态数组来说，shared_ptr 指针默认的释放规则是不支持释放数组的，只能自定义对应的释放规则，才能正确地释放申请的堆内存。</p>
+<p>对于申请的动态数组，释放规则可以使用 C++11 标准中提供的 default_delete<T> 模板类，我们也可以自定义释放规则：</p>
+<pre><code class="language-c++">//指定 default_delete 作为释放规则
+std::shared_ptr&lt;int&gt; p6(new int[10], std::default_delete&lt;int[]&gt;());
+//自定义释放规则
+void deleteInt(int*p) {delete []p;}
+//初始化智能指针，并自定义释放规则
+std::shared_ptr&lt;int&gt; p7(new int[10], deleteInt);
+</code></pre>
+<p>实际上借助 lambda 表达式，我们还可以像如下这样初始化 p7，它们是完全相同的：</p>
+<pre><code class="language-c++">std::shared_ptr&lt;int&gt; p7(new int[10], [](int* p) {delete[]p; });
+</code></pre>
+<blockquote>
+<p>shared_ptr<T> 模板类还提供有其它一些初始化智能指针的方法，感兴趣的读者可前往讲解 <a href="http://www.cplusplus.com/reference/memory/shared_ptr/shared_ptr/">shared_ptr 的官网</a>做系统了解。</p>
+</blockquote>
+<h4 id="2-shared_ptrt模板类提供的成员方法">2、shared_ptr<T>模板类提供的成员方法</h4>
+<p>为了方便用户使用 shared_ptr 智能指针，shared_ptr<T> 模板类还提供有一些实用的成员方法，它们各自的功能如表 1 所示。</p>
+<table>
+<thead>
+<tr>
+<th>成员方法名</th>
+<th>功 能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>operator=()</td>
+<td>重载赋值号，使得同一类型的 shared_ptr 智能指针可以相互赋值。</td>
+</tr>
+<tr>
+<td>operator*()</td>
+<td>重载 * 号，获取当前 shared_ptr 智能指针对象指向的数据。</td>
+</tr>
+<tr>
+<td>operator-&gt;()</td>
+<td>重载 -&gt; 号，当智能指针指向的数据类型为自定义的结构体时，通过 -&gt; 运算符可以获取其内部的指定成员。</td>
+</tr>
+<tr>
+<td>swap()</td>
+<td>交换 2 个相同类型 shared_ptr 智能指针的内容。</td>
+</tr>
+<tr>
+<td>reset()</td>
+<td>当函数没有实参时，该函数会使当前 shared_ptr 所指堆内存的引用计数减 1，同时将当前对象重置为一个空指针；当为函数传递一个新申请的堆内存时，则调用该函数的 shared_ptr 对象会获得该存储空间的所有权，并且引用计数的初始值为 1。</td>
+</tr>
+<tr>
+<td>get()</td>
+<td>获得 shared_ptr 对象内部包含的普通指针。</td>
+</tr>
+<tr>
+<td>use_count()</td>
+<td>返回同当前 shared_ptr 对象（包括它）指向相同的所有 shared_ptr 对象的数量。</td>
+</tr>
+<tr>
+<td>unique()</td>
+<td>判断当前 shared_ptr 对象指向的堆内存，是否不再有其它 shared_ptr 对象再指向它。</td>
+</tr>
+<tr>
+<td>operator bool()</td>
+<td>判断当前 shared_ptr 对象是否为空智能指针，如果是空指针，返回 false；反之，返回 true。</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>除此之外，C++11 标准还支持同一类型的 shared_ptr 对象，或者 shared_ptr 和 nullptr 之间，进行 ==，!=，&lt;，&lt;=，&gt;，&gt;= 运算。</p>
+</blockquote>
+<p>下面程序给大家演示了 shared_ptr 智能指针的基本用法，以及该模板类提供了一些成员方法的用法：</p>
+<pre><code class="language-c++">#include &lt;iostream&gt;
+#include &lt;memory&gt;using namespace std;
+int main(){    
+  //构建 2 个智能指针    
+  std::shared_ptr&lt;int&gt; p1(new int(10));    
+  std::shared_ptr&lt;int&gt; p2(p1);    
+  //输出 p2 指向的数据    
+  cout &lt;&lt; *p2 &lt;&lt; endl;    
+  p1.reset();
+  //引用计数减 1,p1为空指针    
+  if (p1) {        
+    cout &lt;&lt; &quot;p1 不为空&quot; &lt;&lt; endl;    
+  }else{        
+    cout &lt;&lt; &quot;p1 为空&quot; &lt;&lt; endl;
+  }    
+  //以上操作，并不会影响 p2    
+  cout &lt;&lt; *p2 &lt;&lt; endl;    
+  //判断当前和 p2 同指向的智能指针有多少个   
+  cout &lt;&lt; p2.use_count() &lt;&lt; endl;    
+  return 0;
+}
+</code></pre>
+<p>程序执行结果为：</p>
+<p>10<br>
+p1 为空<br>
+10<br>
+1</p>
+<blockquote>
+<p>其余的两个智能指针看cppprimer书吧,P539</p>
+</blockquote>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[c++ explicit-implicit关键字]]></title>
+        <id>https://blog.ogier-maxwell.top/post/c-explicit-implicit-guan-jian-zi/</id>
+        <link href="https://blog.ogier-maxwell.top/post/c-explicit-implicit-guan-jian-zi/">
+        </link>
+        <updated>2022-12-25T04:04:51.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="explicit与implicit显示转换与隐式转换">explicit与implicit（显示转换与隐式转换）</h1>
+<p>在C++中，我们有时可以将<strong>构造函数</strong>用作<strong>自动类型转换函数</strong>。但这种自动特性并非总是合乎要求的，<strong>有时会导致意外的类型转换</strong>，因此，C++新增了关键字explicit，用于关闭这种自动特性。即:</p>
+<blockquote>
+<p>被explicit关键字修饰的<strong>类构造函数</strong>，<strong>不能进行自动地隐式类型转换</strong>，只能显式地进行类型转换。</p>
+</blockquote>
+<p>首先, C++中的explicit关键字<strong>只能用于修饰只有一个参数或只有一个未提供默认值的类构造函数</strong>, 它的作用是表明该构造函数是显示的, 而非隐式的, 跟它相对应的<strong>另一个关键字是implicit, 意思是隐藏的,类构造函数默认情况下即声明为implicit(隐式)</strong>.</p>
+<p>注意：只有一个参数的构造函数，或者构造函数有n个参数，但有n-1个参数提供了默认值，这样的情况才能进行类型转换。</p>
+<blockquote>
+<p><strong>注意是构造函数、构造函数、构造函数</strong></p>
+</blockquote>
+<pre><code class="language-cpp">class Demo{
+public:
+    Demo(){};//没有参数，无法进行隐示类型转换
+    Demo(int a){};//有唯一参数，可以进行隐示类型转换
+    Demo(int a,int b){};//多个参数且无默认值，无法进行隐示类型转换
+    Demo(int a=0,int b=0,int c,int d=0){};//只有一个参数无默认值，可以进行隐示类型转换   
+};
+</code></pre>
+<p>下面的代码中, “Demo de1=10;” 这句为什么是可以的呢? 在C++中, <strong>如果的构造函数只有一个参数时, 那么在编译的时候就会有一个缺省的转换操作</strong>:将该构造函数对应数据类型的数据转换为该类对象. 也就是说 “Demo de1=10;” 这段代码, 编译器自动将整型转换为Demo类对象, 实际上<strong>等同于下面的操作:Demo de1=Demo(10)</strong>。</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+class Demo{
+public:
+    Demo(){};//没有参数，无法进行隐示类型转换
+    Demo(int a){};//有唯一参数，可以进行隐示类型转换
+    Demo(int a,int b){};//多个参数且无默认值，无法进行隐示类型转换
+		//Demo(int a=0,int b=0,int c,int d=0){};//只有一个参数c无默认值，可以进行隐示类型转换
+};
+int main()
+{
+    Demo de=Demo(10);//可以
+    Demo de1=10;//可以
+    
+    return 0;
+}
+
+</code></pre>
+<hr>
+<p>explicit（明确的）关键字的作用就是防止类构造函数的隐式自动转换.</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+class Demo{
+public:
+    Demo(){};//没有参数，无法进行隐示类型转换
+    explicit Demo(int a){};//有唯一参数，可以进行隐示类型转换，但加了explicit关键字
+    Demo(int a,int b){};//多个参数且无默认值，无法进行隐示类型转换
+		//Demo(int a=0,int b=0,int c,int d=0){};//只有一个参数无默认值，可以进行隐示类型转换
+
+};
+int main()
+{
+    Demo de=Demo(10);//可以
+    Demo de1=10;//不可以，构造函数加了explicit关键字，不能进行隐式转换
+
+    return 0;
+}
+
+</code></pre>
+<hr>
+<p>举一个实际上使用explicit的例子</p>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+class A{
+	public:
+		A(int x){//A的一个构造函数
+		cout&lt;&lt;&quot;我被用了&quot;&lt;&lt;endl;
+	}
+};
+
+void f(A a){//本意函数的参数是一个类型A的对象a
+}
+int main( ){
+	f(1);// 被隐式转换为f(A(1)) ，本来是1却被自动调用了A(1)这就是拷贝初始化
+	//输出：&quot;我被调用了&quot;
+	return 0;
+}
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[static const 与初始化]]></title>
+        <id>https://blog.ogier-maxwell.top/post/static-const-yu-chu-shi-hua/</id>
+        <link href="https://blog.ogier-maxwell.top/post/static-const-yu-chu-shi-hua/">
+        </link>
+        <updated>2022-08-12T04:06:59.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="static-const-与初始化">static、const 与初始化</h1>
+<blockquote>
+<p>https://zhuanlan.zhihu.com/p/141113043<br>
+https://blog.csdn.net/tobefxz/article/details/14109697</p>
+</blockquote>
+<h2 id="static">static</h2>
+<h3 id="1控制存储方式">1.控制存储方式</h3>
+<p>static被引入以告知编译器，将变量<strong>存储在程序的静态存储区</strong>而非栈上空间。</p>
+<blockquote>
+<p>1、引出原因：函数内部定义的变量，在程序执行到它的定义处时，编译器为它在栈上分配空间，大家知道，<strong>函数在栈上分配的空间在此函数执行结束时会释放掉</strong>，这样就产生了一个问题: 如果想将函数中此变量的值保存至下一次调用时，如何实现？</p>
+<p>最容易想到的方法是定义一个全局的变量，但定义为一个全局变量有许多缺点，最明显的缺点是破坏了此变量的访问范围（使得在此函数中定义的变量，不仅仅受此函数控制）。</p>
+<p>2. 解决方案：因此c++ 中引入了static，用它来修饰变量，它能够指示编译器将此变量在程序的静态存储区分配空间保存，这样即实现了目的，又使得此变量的存取范围不变。</p>
+</blockquote>
+<h3 id="2控制可见性与连接类型">2.控制可见性与连接类型</h3>
+<p>static还有一个作用，它会把变量的可见范围限制在编译单元中，使它成为一个内部连接，这时，它的反义词为”extern”.</p>
+<p>内部链接、外部链接例子：</p>
+<pre><code class="language-cpp">int giants = 5;　　　　　　　// 文件作用域，外部链接
+static int dodgers = 3;　　 // 文件作用域，内部链接
+int　main(){
+...
+}
+//该文件和同一程序的其他文件都可以使用变量giants。
+//而变量dodgers属文件私有，该文件中的任意函数都可使用它。
+</code></pre>
+<p>static作用分析总结：<strong>static总是使得变量或对象的存储形式变成静态存储</strong>，连接方式变成内部连接，对于局部变量（已经是内部连接了），它仅改变其存储方式；对于全局变量（已经是静态存储了），它仅改变其连接类型。</p>
+<h3 id="类中使用static数据成员的作用">类中使用static数据成员的作用</h3>
+<h4 id="出现原因">出现原因</h4>
+<p>1.需要在一个类的各个对象间交互，即需要一个数据对象<strong>为整个类而非某个对象服务</strong>。<strong>static数据成员在各个对象中是互通的。</strong><br>
+2.同时又力求不破坏类的封装性,即要求此成员隐藏在类的内部，对外不可见。</p>
+<p>类的static成员满足了上述的要求，因为它具有如下特征：有独立的存储区，属于整个类。</p>
+<h4 id="类中使用static的注意事项">类中使用static的注意事项</h4>
+<p>1.对于静态的数据成员，连接器会保证它拥有一个单一的外部定义。<strong>静态数据成员按定义出现的先后顺序依次初始化</strong>，注意<strong>静态成员嵌套时，要保证所嵌套的成员已经初始化了</strong>。消除时的顺序是初始化的反顺序。<br>
+2.<strong>类的静态成员<em>函数</em>是</strong>属于整个类而非类的对象，所以它<strong>没有this指针</strong>，这就导致了它<strong>仅能访问类的静态数据和静态成员函数</strong>，并且<strong>不能被声明为virtual</strong></p>
+<h2 id="const">const</h2>
+<h3 id="c的一些特点">c++的一些特点</h3>
+<p>1.c++有一个类型严格的编译系统，这使得<strong>c++程序的错误在编译阶段即可发现许多</strong>，从而使得出错率大为减少。<br>
+2.c中很常见的预处理指令 <strong>#define variablename variablevalue</strong> 可以很方便地进行值替代，这种值替代至少在三个方面优点突出.</p>
+<h4 id="预处理指令的优点">预处理指令的优点</h4>
+<p>1.避免了意义模糊的数字出现，使得<strong>程序语义流畅清晰</strong>，如下例：#define user_num_max 107 这样就避免了直接使用107带来的困惑。<br>
+2.可以很<strong>方便地进行参数的调整与修改</strong>，如上例，当人数由107变为201时，进改动<strong>预处理定义</strong>即可。<br>
+3.**提高了程序的执行效率，**由于使用了预编译器进行值替代，并不需要为这些常量分配存储空间，所以执行的效率较高。</p>
+<h3 id="c为什么要引入const">C++为什么要引入const</h3>
+<p>由上述C++的特点：</p>
+<blockquote>
+<p>预处理语句虽然有以上的许多优点，但它有个比较致命的缺点，即，<strong>预处理语句仅仅只是简单值替代</strong>，缺乏类型的检测机制。这样预处理语句就<strong>不能享受c++严格类型检查的好处</strong>，从而可能成为引发一系列错误的隐患。</p>
+</blockquote>
+<p>所以得出c++引入const的目的</p>
+<p>onst 推出的初始目的，正是为了取代预编译指令，消除它的缺点，同时继承它的优点。</p>
+<h4 id="const代替define的优点">const代替#define的优点</h4>
+<p>1.以const 修饰的常量值，具有不可变性，这是它能取代预定义语句的基础。</p>
+<p>2.很明显，它也同样可以避免意义模糊的数字出现，同样可以很方便地进行参数的调整和修改。</p>
+<p>3.c++的编译器通常不为普通const常量分配存储空间，而是将它们保存在符号表中，这使得它成为一个编译期间的常量，没有了存储与读内存的操作，使得它的效率也很高，同时，这也是它取代预定义语句的重要基础。这里，我要提一下，为什么说这一点是也是它能取代预定义语句的基础，这是因为，编译器不会去读存储的内容，如果编译器为const分配了存储空间，它就不能够成为一个编译期间的常量了。（？没看懂）</p>
+<ol start="4">
+<li>最后，const定义也像一个普通的变量定义一样，它会由编译器对它进行类型的检测，消除了预定义语句的隐患。</li>
+</ol>
+<h3 id="const的使用情况">const的使用情况</h3>
+<p>1.const用于指针（常量指针和指针常量）</p>
+<p>我就记得<strong>const右边哪个量，哪个就是不变量</strong></p>
+<pre><code class="language-cpp">//常量指针
+int const *a; 　file://a可变，*a不可变 
+//const更靠近*，代表*a不变，a可变，
+//指针指向的地址可以变，但不可以通过指针改变指向的值
+
+//指针常量，在定义的同时必须初始化
+int *const a; 　file://a不可变，*a可变 
+//const更靠近a，代表a不变，*a可变，
+//指针指向的地址不可以变，但可以通过指针改变指向的值
+</code></pre>
+<p>2.const 限定函数的传递值参数</p>
+<pre><code class="language-cpp">　void fun(const int var);
+</code></pre>
+<p>分析：上述写法<strong>限定参数在函数体中不可被改变</strong>。由值传递的特点可知，var在函数体中的改变不会影响到函数外部。所以，此限定与函数的使用者无关，仅与函数的编写者有关。</p>
+<p>结论：<strong>最好在函数的内部进行限定，对外部调用者屏蔽</strong>，以免引起困惑。如可改写如下：</p>
+<pre><code class="language-cpp">void fun(int var){
+	const int &amp; varalias = var;
+
+	varalias ....
+
+	.....
+} 
+</code></pre>
+<p>3.const 限定函数的值型返回值：</p>
+<pre><code class="language-cpp">const int fun1(); 
+const myclass fun2();
+</code></pre>
+<p>分析:上述写法限定函数的返回值不可被更新，当函数返回内部的类型时（如fun1），已经是一个数值，当然不可被赋值更新，所以，此时const无意义，最好去掉，以免困惑。当函数返回自定义的类型时（如fun2），这个类型仍然包含可以被赋值的变量成员，所以，此时有意义。（？没看懂）</p>
+<p>4.传递与返回地址： 此种情况最为常见，由地址变量的特点可知，适当使用const，意义昭然。</p>
+<p>5.const 限定类的成员函数：</p>
+<pre><code class="language-cpp">class classname {
+　public:
+　　int fun() const;
+　.....
+}
+//获得能力：可以操作常量对象。
+//失去能力：不能修改类的数据成员，不能在函数中调用其他不是const的函数。
+</code></pre>
+<p>注意：采用此种const 后置的形式是一种规定，亦为了不引起混淆。在此函数的声明中和定义中均要使用const,因为const已经成为类型信息的一部分。</p>
+<h3 id="const总结">const总结</h3>
+<ol>
+<li>函数返回值为const时，返回的东西赋给一个类型相同的标示后其不能为左值；不可被改变</li>
+<li>用const定义的int可用来开辟数组，但const定义的常量数组中的元素，不能用来定义数组。</li>
+<li>const int *i; int const *i; int * const i; 前两个功能相同，说明I所指向的内容不变；最后一 个说明指针指向的地址不变，但内容可变。</li>
+<li>类中的const成员函数,定义为在原型后加const。常量函数不能修改类中的任何属性。但有两种方法可 以修改。</li>
+</ol>
+<blockquote>
+<ol>
+<li>{(yourclass *)this-&gt;member = values;}</li>
+<li>将一个成员定义成mutable即可被常量函数修改。</li>
+</ol>
+</blockquote>
+<ol start="5">
+<li>类中的常量const 类型的，不能在类中被用来定义数组。而enum {ONE=100; TWO=2};定义的ONE、TWO 却可以。通常的enum定义的置分配问题：enum A{ L=9, Z};此时Z的值为10。</li>
+</ol>
+<h2 id="类中const和statoc数据成员的初始化">类中const和statoc数据成员的初始化</h2>
+<blockquote>
+<p>https://blog.csdn.net/tobefxz/article/details/14109697</p>
+</blockquote>
+<pre><code class="language-cpp">class Test{
+public:
+	Test():a(0){}
+	enum {size1=100,size2=200};
+private:
+	const int a;//只能在构造函数初始化列表中初始化
+	static int b;//在类的实现文件中定义并初始化
+	conststatic int c;//与 static const int c;相同。
+};
+ 
+int Test::b=0;//static成员变量不能在构造函数初始化列表中初始化，因为它不属于某个对象。
+cosnt intTest::c=0;//注意：给静态成员变量赋值时，不需要加static修饰符，但要加cosnt。
+</code></pre>
+]]></content>
+    </entry>
+</feed>
